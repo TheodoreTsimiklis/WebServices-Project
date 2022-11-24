@@ -5,8 +5,8 @@
     </div>
     <div class="col-md-6 d-md-flex align-items-md-center">
         <div style="max-width: 350px;">
-            <h2 class="text-uppercase fw-bold">Biben dum<br>fringi dictum, augue purus</h2>
-            <p class="my-3">Tincidunt laoreet leo, adipiscing taciti tempor. Primis senectus sapien, risus donec ad fusce augue interdum.</p><a class="btn btn-primary btn-lg me-2" role="button" href="#">Book an Appointment</a>
+        h2 class="text-uppercase fw-bold">Donate Blood Now.<br>Help save people who need blood transfusions</h2>
+                        <p class="my-3">By donating your blood, you have the opportunity to help someone in need.</p><a class="btn btn-primary btn-lg me-2" role="button" href="#">Book an Appointment</a>
         </div>
     </div>
 </div>

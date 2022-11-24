@@ -6,6 +6,9 @@ class Appointment extends Controller
      */ 
     public function __construct()
     {
+        if(!isLoggedIn()){
+            header('Location: /MVC/Login');
+        }
     }
 
     /*
