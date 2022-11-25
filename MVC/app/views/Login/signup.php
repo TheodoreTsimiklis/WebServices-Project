@@ -12,7 +12,6 @@
                                     <form class="text-center" method="post">
                                         <div class="mb-3"><input class="form-control" type="text" name="firstname" placeholder="First name"></div>
                                         <div class="mb-3"><input class="form-control" type="text" name="lastname" placeholder="Last name"></div>
-                                        <div class="mb-3"><input class="form-control" type="text" name="username" placeholder="Username"></div>
                                         <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" required="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></div>
                                         <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
                                         <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Register</button></div>

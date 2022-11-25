@@ -23,6 +23,9 @@
                             <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/About/index">ABOUT</a></li>
                             <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/Login/index">LOGIN</a></li>
                             <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/Login/signup">SIGNUP</a></li>
+                            <!--MODIFY FOR MAKING HEADER CHANGED WHEN LOGGED IN (UNCOMMENT WHEN CODED)-->
+                            <!-- <li class="nav-item"><a class="nav-link" href="index.html">DASHBOARD</a></li>
+                            <li class="nav-item"><a class="nav-link" href="../Login/index.html">LOGOUT</a></li> -->
                         </ul>
                     </div>
                 </div>

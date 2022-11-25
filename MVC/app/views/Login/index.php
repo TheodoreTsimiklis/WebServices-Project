@@ -7,7 +7,7 @@
             </div>
             <div class="row d-flex justify-content-center">
                 <div class="col">
-                    <section class="position-relative py-4 py-xl-5">
+                    <section class="position-relative py-4 py-xl-5" style="margin-top: -100px;">
                         <div class="container">
                             <div class="row d-flex justify-content-center">
                                 <div class="col-md-6 col-xl-4">

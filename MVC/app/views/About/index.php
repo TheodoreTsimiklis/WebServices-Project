@@ -1,4 +1,4 @@
-<?php require APPROOT . '/views/includes/header.php';  ?>
+<?php require APPROOT . '/views/includes/header.php'; ?>
             <div class="row mb-5">
                 <div class="col">
                     <h2 class="text-center">WHO WE ARE</h2>
@@ -9,5 +9,4 @@
             </div>
         </div>
     </section>
-
- <?php require APPROOT . '/views/includes/footer.php';  ?>
+<?php require APPROOT . '/views/includes/footer.php'; ?>
