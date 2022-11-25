@@ -4,7 +4,7 @@ $protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https'
 define('APPROOT', dirname(dirname(__FILE__)));
 
 // URL Root
-define('URLROOT', $protocol.'://'.$_SERVER['HTTP_HOST'].'/WBSProject/MVC');
+define('URLROOT', $protocol.'://'.$_SERVER['HTTP_HOST'].'/WebServices-Project/MVC');
 
 // Site Name
 define('SITENAME', 'Blood Donation');
