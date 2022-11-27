@@ -74,7 +74,7 @@ class Login extends Controller
                 ];
                 if($this->loginModel->createAccount($data)){
                         echo 'Please wait creating the account for '.trim($_POST['firstname']);
-                        echo '<meta http-equiv="Refresh" content="2; url=/WEBSERVICES-PROJECT/MVC/Login/">';      
+                        echo '<meta http-equiv="Refresh" content="2; url='.URLROOT.'/MVC/Login/">';      
                 }
             }
             else{

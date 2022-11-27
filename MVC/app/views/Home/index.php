@@ -6,7 +6,16 @@
     <div class="col-md-6 d-md-flex align-items-md-center">
         <div style="max-width: 350px;">
         <h2 class="text-uppercase fw-bold">Donate Blood Now.<br>Help save people who need blood transfusions</h2>
-        <p class="my-3">By donating your blood, you have the opportunity to help someone in need.</p><a class="btn btn-primary btn-lg me-2" role="button" href="#">Book an Appointment</a>
+        <p class="my-3">By donating your blood, you have the opportunity to help someone in need.</p>
+            <?php
+            if (isLoggedIn()) {
+                echo '<a class="btn btn-primary btn-lg me-2" role="button" href="' . URLROOT . '/Appointment/index">Book an Appointment</a>';
+            }
+            else {
+                echo '<a class="btn btn-primary btn-lg me-2" role="button" href="' . URLROOT . '/Login/index">Book an Appointment</a>';
+            }
+            
+            ?>
         </div>
     </div>
 </div>
