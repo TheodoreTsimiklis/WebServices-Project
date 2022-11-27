@@ -95,7 +95,7 @@ class Login extends Controller
     public function logout(){
         unset($_SESSION['user_id']);
         session_destroy();
-        echo '<meta http-equiv="Refresh" content="1; url=/MVC/Login/">';   
+        echo '<meta http-equiv="Refresh" content="1; url='.URLROOT.'/Login/index">';   
 
     }
 }

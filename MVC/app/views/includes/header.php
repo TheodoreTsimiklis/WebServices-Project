@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/Hero-Clean-Reverse-images.css">
     <link rel="stylesheet" href="<?php echo URLROOT; ?>/css/Login-Form-Basic-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 </head>
 
 <body>
@@ -19,18 +20,18 @@
                             </svg></span><span>BLOOD DONATION</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navcol-2">
                         <ul class="navbar-nav ms-auto">
-                            <li class="nav-item"><a class="nav-link active" href="<?php echo URLROOT; ?>/Home/index">HOME</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/About/index">ABOUT</a></li>
+                            <li class="nav-item"><a class="nav-link active" href="<?php echo URLROOT; ?>/Home/index"><i class="bi bi-house"></i> HOME</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/About/index"><i class="bi bi-question-square"></i> ABOUT</a></li>
                             <!--<li class="nav-item"><a class="nav-link" href="<?php //echo URLROOT; ?>/Login/index">LOGIN</a></li>
                             <li class="nav-item"><a class="nav-link" href="<?php //echo URLROOT; ?>/Login/signup">SIGNUP</a></li>-->
                             <!--MODIFY FOR MAKING HEADER CHANGED WHEN LOGGED IN (UNCOMMENT WHEN CODED)-->
                             <?php
                             if (isLoggedIn()) {
-                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Dashboard/index">DASHBOARD</a></li>'; // to fix href
-                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Login/logout">Logout</a></li>';// to fix href 
+                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Dashboard/index"><i class="bi bi-person"></i> DASHBOARD</a></li>'; // to fix href
+                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Login/logout"><i class="bi bi-box-arrow-left"></i> LOGOUT</a></li>';// to fix href 
                             } else {
-                                echo '<li class="nav-item"><a class="nav-link"  href="' . URLROOT . '/Login/index">LOGIN</a></li>';
-                                echo '<li class="nav-item"><a class="nav-link"  href="' . URLROOT . '/Login/signup">SIGNUP</a></li>';
+                                echo '<li class="nav-item"><a class="nav-link"  href="' . URLROOT . '/Login/index"><i class="bi bi-box-arrow-right"></i> LOGIN</a></li>';
+                                echo '<li class="nav-item"><a class="nav-link"  href="' . URLROOT . '/Login/signup"><i class="bi bi-pencil-square"></i> SIGNUP</a></li>';
                             }
  
                             ?>
