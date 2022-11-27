@@ -18,7 +18,7 @@ class Login extends Controller
             $this->view('Login/index');
         }
         else{
-            $user = $this->loginModel->getUser($_POST['username']);
+            $user = $this->loginModel->getAccount($_POST['email']);
             
             if($user != null){
                 $hashed_pass = $user->pass_hash;
@@ -27,10 +27,11 @@ class Login extends Controller
                     //echo '<meta http-equiv="Refresh" content="2; url=/MVC/">';
                     $this->createSession($user);
                     $data = [
-                        'msg' => "Welcome, $user->username!",
+                        'msg' => "Welcome, $user->firstname!",
                     ];
                     $this->view('Home/index',$data);
                 
+                    /*
                     // LOGGING
                     // Create the logger
                     $logger = new Logger('my_logger');
@@ -40,17 +41,18 @@ class Login extends Controller
 
                     // You can now use your logger
                     $logger->info($user->username.' logged in successfully');
+                    */
                 }
                 else{
                     $data = [
-                        'msg' => "Password incorrect! for $user->username",
+                        'msg' => "Password incorrect! for $user->email",
                     ];
                     $this->view('Login/index',$data);
                 }
             }
             else{
                 $data = [
-                    'msg' => "User: ". $_POST['username'] ." does not exists",
+                    'msg' => "User: ". $_POST['email'] ." does not exists",
                 ];
                 $this->view('Login/index',$data);
             }
@@ -63,20 +65,22 @@ class Login extends Controller
             $this->view('Login/signup');
         }
         else{
-            $user = $this->loginModel->getUser($_POST['username']);
+            $user = $this->loginModel->getAccount($_POST['email']);
             if($user == null){
                 $data = [
-                    'username' => trim($_POST['username']),
-                    'pass_hash' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+                    'email' => trim($_POST['email']),
+                    'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+                    'firstname' => trim($_POST['firstname']),
+                    'lastname' => trim($_POST['lastname']),
                 ];
-                if($this->loginModel->createUser($data)){
-                        echo 'Please wait creating the account for '.trim($_POST['username']);
+                if($this->loginModel->createAccount($data)){
+                        echo 'Please wait creating the account for '.trim($_POST['firstname']);
                         echo '<meta http-equiv="Refresh" content="2; url=/MVC/Login/">';      
                 }
             }
             else{
                 $data = [
-                    'msg' => "User: ". $_POST['username'] ." already exists",
+                    'msg' => "Account: ". $_POST['email'] ." already exists",
                 ];
                 $this->view('Login/create',$data);
             }
@@ -86,7 +90,7 @@ class Login extends Controller
 
     public function createSession($user){
         $_SESSION['user_id'] = $user->userID;
-        $_SESSION['user_username'] = $user->username;
+        $_SESSION['email'] = $user->email;
     }
 
     public function logout(){

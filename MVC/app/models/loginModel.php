@@ -4,16 +4,18 @@ class loginModel{
         $this->db = new Model;
     }
     
-    public function getUser($username){
-        $this->db->query("SELECT * FROM credentials WHERE username = :username");
-        $this->db->bind(':username',$username);
+    public function getAccount($email){
+        $this->db->query("SELECT * FROM user WHERE email = :email");
+        $this->db->bind(':email',$email);
         return $this->db->getSingle();
     }
 
-    public function createUser($data){
-        $this->db->query("INSERT INTO credentials (username, pass_hash) values (:username, :pass_hash)");
-        $this->db->bind(':username', $data['username']);
-        $this->db->bind(':pass_hash', $data['pass_hash']);
+    public function createAccount($data){
+        $this->db->query("INSERT INTO user (email, password, firstname, lastname) values (:email, :password, :firstname, :lastname)");
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':password', $data['password']);
+        $this->db->bind(':firstname', $data['firstname']);
+        $this->db->bind(':lastname', $data['lastname']);
 
 
         if($this->db->execute()){
