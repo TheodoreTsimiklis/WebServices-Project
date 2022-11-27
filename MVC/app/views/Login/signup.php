@@ -14,7 +14,7 @@
                                         <div class="mb-3"><input class="form-control" type="text" name="lastname" placeholder="Last name"></div>
                                         <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email" required="" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"></div>
                                         <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-                                        <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Register</button></div>
+                                        <div class="mb-3"><button class="btn btn-primary d-block w-100" input type="submit" name="signup">Register</button></div>
                                         <p class="text-muted">Already have an account?<a href="<?php echo URLROOT; ?>/Login/index">Login</a></p>
                                     </form>
                                 </div>

@@ -12,7 +12,7 @@ class Login extends Controller
     }
 
     // default method of the Login page
-    public function index()
+    public function index() // logs in user
     {
         if(!isset($_POST['login'])){
             $this->view('Login/index');
@@ -21,9 +21,8 @@ class Login extends Controller
             $user = $this->loginModel->getAccount($_POST['email']);
             
             if($user != null){
-                $hashed_pass = $user->pass_hash;
                 $password = $_POST['password'];
-                if(password_verify($password,$hashed_pass)){
+                if($password){
                     //echo '<meta http-equiv="Refresh" content="2; url=/MVC/">';
                     $this->createSession($user);
                     $data = [
@@ -54,12 +53,12 @@ class Login extends Controller
                 $data = [
                     'msg' => "User: ". $_POST['email'] ." does not exists",
                 ];
-                $this->view('Login/index',$data);
+                $this->view('Login/signup',$data);
             }
         }
     }
 
-    public function signup()
+    public function signup() // creates account
     {
         if(!isset($_POST['signup'])){
             $this->view('Login/signup');
@@ -69,20 +68,20 @@ class Login extends Controller
             if($user == null){
                 $data = [
                     'email' => trim($_POST['email']),
-                    'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+                    'password' => trim($_POST['password'], PASSWORD_DEFAULT),
                     'firstname' => trim($_POST['firstname']),
                     'lastname' => trim($_POST['lastname']),
                 ];
                 if($this->loginModel->createAccount($data)){
                         echo 'Please wait creating the account for '.trim($_POST['firstname']);
-                        echo '<meta http-equiv="Refresh" content="2; url=/MVC/Login/">';      
+                        echo '<meta http-equiv="Refresh" content="2; url=/WEBSERVICES-PROJECT/MVC/Login/">';      
                 }
             }
             else{
                 $data = [
                     'msg' => "Account: ". $_POST['email'] ." already exists",
                 ];
-                $this->view('Login/create',$data);
+                $this->view('Login/signup',$data);
             }
             
         }
