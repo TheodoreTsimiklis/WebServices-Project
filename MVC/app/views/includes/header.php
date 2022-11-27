@@ -21,8 +21,11 @@
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item"><a class="nav-link active" href="<?php echo URLROOT; ?>/Home/index">HOME</a></li>
                             <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/About/index">ABOUT</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/Login/index">LOGIN</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/Login/signup">SIGNUP</a></li>
                             <!--MODIFY FOR MAKING HEADER CHANGED WHEN LOGGED IN (UNCOMMENT WHEN CODED)-->
                             <?php
+                            /*
                             if (isLoggedIn()) {
                                 echo '<li class="nav-item"><a class="nav-link" href="/WEBSERVICES-PROJECT/MVC/Login/logout"> Logout  '. $_SESSION['user_id'].'</a></li>';
                                 echo '<li class="nav-item"><a class="nav-link" href="index.html">DASHBOARD</a></li>';
@@ -30,6 +33,7 @@
                                 echo '<li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/Login/index">LOGIN</a></li>';
                                 echo '<li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/Login/signup">SIGNUP</a></li>';
                             }
+                            */
                             ?>
                         </ul>
                     </div>
