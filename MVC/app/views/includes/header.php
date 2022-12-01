@@ -27,8 +27,8 @@
                             <!--MODIFY FOR MAKING HEADER CHANGED WHEN LOGGED IN (UNCOMMENT WHEN CODED)-->
                             <?php
                             if (isLoggedIn()) {
-                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Dashboard/index"><i class="bi bi-person"></i> DASHBOARD</a></li>'; // to fix href
-                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Login/logout"><i class="bi bi-box-arrow-left"></i> LOGOUT</a></li>';// to fix href 
+                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Dashboard/index"><i class="bi bi-person"></i> DASHBOARD</a></li>'; 
+                                echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Login/logout"><i class="bi bi-box-arrow-left"></i> LOGOUT</a></li>';
                             } else {
                                 echo '<li class="nav-item"><a class="nav-link"  href="' . URLROOT . '/Login/index"><i class="bi bi-box-arrow-right"></i> LOGIN</a></li>';
                                 echo '<li class="nav-item"><a class="nav-link"  href="' . URLROOT . '/Login/signup"><i class="bi bi-pencil-square"></i> SIGNUP</a></li>';

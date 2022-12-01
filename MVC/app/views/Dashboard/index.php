@@ -10,9 +10,9 @@
                 <div class="col">
                     <section class="position-relative py-4 py-xl-5">
                         <div class="container">
-                            <div class="d-flex justify-content-center"><button class="btn btn-danger btn-lg text-uppercase align-self-center" type="button" style="margin-bottom: 24px;">My Account</button></div>
-                            <div class="d-flex justify-content-center"><button class="btn btn-danger btn-lg text-uppercase align-self-center" type="button" style="margin-bottom: 24px;">Book Appointment</button></div>
-                            <div class="d-flex justify-content-center"><button class="btn btn-danger btn-lg text-uppercase align-self-center" type="button">My Appointments</button></div>
+                            <div class="d-flex justify-content-center"><button class="btn btn-danger btn-lg text-uppercase align-self-center" type="button" value="Next" onclick="window.location.href='<?php echo URLROOT; ?>/Account/index'" style="margin-bottom: 24px;" name="myAccount">My Account</button></div>
+                            <div class="d-flex justify-content-center"><button class="btn btn-danger btn-lg text-uppercase align-self-center" type="button" value="Next" onclick="window.location.href='<?php echo URLROOT; ?>/Appointment/index'"style="margin-bottom: 24px;">Book Appointment</button></div>
+                            <div class="d-flex justify-content-center"><button class="btn btn-danger btn-lg text-uppercase align-self-center" type="button" value="Next" onclick="window.location.href='<?php echo URLROOT; ?>/Appointment/view_appointments'">My Appointments</button></div>
                         </div>
                     </section>
                 </div>
