@@ -8,9 +8,8 @@
                             <div class="card mb-5">
                                 <div class="card-body d-flex flex-column align-items-center">
                                     <form class="text-center" method="post">
-                                            <div class='mb-3'><label class='form-label fs-4 fw-semibold d-flex justify-content-start' name='fname'>First Name:</label><input class='form-control-plaintext' type='text' readonly=''></div>
-                                            <div class='mb-3'><label class='form-label fs-4 fw-semibold d-flex justify-content-start' name='lname'>Last Name:</label><input class='form-control-plaintext' type='text'  readonly=''></div>
-                                            <div class='mb-3'><label class='form-label fs-4 fw-semibold d-flex justify-content-start'name='email'>Email:</label><input class='form-control-plaintext' type='text' readonly=''></div>
+                                            <div class='mb-3'><label class='form-label fs-4 fw-semibold d-flex justify-content-start' name='name'>Name: <?php echo $_SESSION['name']; ?> </label><input class='form-control-plaintext' type='text' readonly=''></div>
+                                            <div class='mb-3'><label class='form-label fs-4 fw-semibold d-flex justify-content-start'name='email'>Email: <?php echo $_SESSION['email']; ?>  </label><input class='form-control-plaintext' type='text' readonly=''></div>
                                         <div class="mb-3"></div>
                                         <div class="mb-3"></div>
                                     </form>
