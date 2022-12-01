@@ -1,0 +1,65 @@
+openapi: 3.0.0
+info:
+  title: 'Blood Donation Appointment Booking API'
+  version: '1.0'
+paths:
+  /webservice/api/auth/:
+    get:
+      tags:
+        - 'JWT Authentication'
+      summary: 'Create JWT'
+      operationId: 3ca95008b8e3a86e3c21427d89ec7675
+      parameters:
+        -
+          name: X-API-Key
+          in: header
+          required: true
+          schema:
+            type: http
+      responses:
+        '401':
+          description: Unauthorized
+        '200':
+          description: Success
+      security:
+        -
+          Bearer: []
+  /webservice/api/appointments/:
+    post:
+      tags:
+        - 'Blood Donation Appointment'
+      summary: "Donor's appointment"
+      operationId: 917e6074f8b46a5eb9dadf05155f920f
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - apikey
+                - userID
+                - donorname
+                - datetime
+              properties:
+                apikey:
+                  description: 'client apikey'
+                  type: string
+                userID:
+                  description: 'user id'
+                  type: integer
+                donorname:
+                  description: 'donor name'
+                  type: string
+                datetime:
+                  description: 'date and time'
+                  type: string
+              type: object
+            example:
+              apikey: abc123
+              userID: 1
+              donorname: 'Chilka Castro'
+              datetime: '2022-09-23 11:40'
+      responses:
+        '401':
+          description: 'Booking Appointment Failed'
+        '200':
+          description: 'Booking Appointment Successful'

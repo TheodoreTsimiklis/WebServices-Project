@@ -1,0 +1,5 @@
+RewriteEngine on
+
+RewriteBase "/WebServices-Project/webservice/api/"
+
+RewriteRule (.*)/(.*) index.php?resource=$1&id=$2 [QSA]
