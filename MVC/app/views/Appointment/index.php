@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/includes/header.php'; ?>
+
 <h1 class="d-flex justify-content-center">Set Appointment</h1>
             <div class="row d-flex justify-content-center">
                 <div class="col">

@@ -7,6 +7,7 @@
         public $statuscode;
         public $statustext;
         public $contenttype;
+        public $customtoken;
 
         function __construct($payload)
         {

@@ -4,6 +4,6 @@
         <host>localhost</host>
         <user>root</user>
         <password></password>
-        <dbname>webservice</dbname>
+        <dbname>project_service</dbname>
     </database>
 </config>

@@ -33,6 +33,8 @@ class API
 
     private $auth;
 
+    private $jwt;
+
     function __construct()
     {
     }
@@ -163,6 +165,67 @@ class API
         $this->response = $responseBuilder->getResponse();
     }
 
+    public function processGetHospitalResponse() {
+        $this->verifyAuthorizationHeader();
+        // $apikey = $this->request->header['X-API-Key'];
+        // Determine the reponse properties
+        $header = array();
+        $payload = array();
+        $statuscode = 0;
+        $statustext = "";
+        $contenttype = "";
+        $customtoken = "";
+
+        // Get the data/resource
+        $rawpayload = $this->controller->getHospitalsList();
+
+        // Check if data  was returned: the data here is the requested resource
+        // If the data is found and can be returned
+        // The HTTP status code of the response should be: 200
+        if (count($rawpayload) > 0) {
+            $statuscode = 200;
+            $statustext = "OK";
+            $customtoken = 'Bearer ' . $this->jwt;
+
+        } else {
+            $statuscode = 404;
+            $statustext = "Not Found";
+
+            $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
+            $customtoken = 'Bearer ' . $this->jwt;
+
+
+        }
+
+        // How do we decide what is the response content-type?
+        switch ($this->request->header['Accept']) {
+
+            case 'application/json':
+                // Serialize the array of objects into a JSON array
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+
+                break;
+            case 'application/xml':
+                break;
+            default:
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+
+        }
+
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
+
+        $responseBuilder = new Responsebuilder($headerfields, $payload);
+
+        $this->response = $responseBuilder->getResponse();
+        var_dump($this->response->payload);
+        // echo $this->response->payload;
+    }
+
+
     /**
      * @OA\Post  (
      *     tags={"Blood Donation Appointment"},
@@ -188,19 +251,7 @@ class API
     function processPostResponse()
     {
 
-        try {
-            $Authorization = $this->request->header["Authorization"];
-            // echo $jwt;
-            $jwt = explode(" ", $Authorization)[1];
-
-            $apikey = $this->request->header["X-API-Key"];
-            $decodedpayload = $this->auth->verifyToken($jwt, $apikey);
-
-
-        } catch (Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n";
-        }
-
+        $this->verifyAuthorizationHeader();
 
         $json = file_get_contents('php://input');
 
@@ -260,6 +311,21 @@ class API
     }
 
 
+    function verifyAuthorizationHeader() {
+        try {
+            $Authorization = $this->request->header["Authorization"];
+            // echo $jwt;
+            $this->jwt = explode(" ", $Authorization)[1];
+
+            $apikey = $this->request->header["X-API-Key"];
+            $decodedpayload = $this->auth->verifyToken($this->jwt, $apikey);
+
+
+        } catch (Exception $e) {
+            echo 'Caught exception: ', $e->getMessage(), "\n";
+        }
+    }
+
     /*
        Process the Authentication 
      */
@@ -272,7 +338,7 @@ class API
         $statuscode = 0;
         $statustext = "";
         $contenttype = "";
-        $www_authenticate = "";
+        $customtoken = "";
         // Generate a JWT token 
         $jwt_token = $this->controller->processToken($apikey);
         // Check if data  was returned: the data here is the requested resource
@@ -290,17 +356,17 @@ class API
         switch ($this->request->header['Accept']) {
             case 'application/json':
                 // Serialize the array of objects into a JSON array
-                $www_authenticate = "Bearer " . $jwt_token;
+                $customtoken = "Bearer " . $jwt_token;
                 $contenttype = 'application/json';
                 break;
             case 'application/xml':
                 break;
             default:
-                $www_authenticate = "Bearer " . $jwt_token;
+                $customtoken = "Bearer " . $jwt_token;
                 $contenttype = 'application/json';
         }
 
-        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'WWW-Authenticate' => $www_authenticate];
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
 
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
@@ -312,6 +378,6 @@ class API
 $api = new API();
 
 $api->processRequest();
-// echo( $api->response->payload);
+// var_dump($api->response->payload);
 
 ?>
