@@ -16,22 +16,18 @@ class Appointment extends Controller
         Displays About page (who we are information)
     */
     public function index()
-    {  
-
-        // echo "this is indix function, u better fucing diusplay this "; 
+    { 
         if(!isset($this->jwt)) { //  avoids regenerating jwt again 
             // generate token first 
             $this->generateToken();
-            echo "this is indix function, u better fucing diusplay this "; 
         }            
         // if you have the jwt already
-        else {
+        if (isset($this->jwt)) { 
             // go to the view page and send the list of hospitals
             if (isset($_POST['submit'])) {  // POST : clcked Book an appointment button
                 $this->createAppointment();
             }
             else { 
-                echo "enter here";  // GET HOSPITALS
                 // $data for all the hospital
                 // get hospitals list and put it in an array and then send it on the view
                 $data = $this->getHospitalList();
@@ -58,16 +54,17 @@ class Appointment extends Controller
         //return the transfer as a string
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $data);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // Retudn headers seperatly from the Response Body
 
         $response = curl_exec($ch);
-        var_dump($response);
-        
+        // $data = json_decode($response, TRUE);
+        // var_dump($data);
         return $response;
+
         // $info = curl_getinfo($ch);
     }
     /*

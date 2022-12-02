@@ -221,8 +221,8 @@ class API
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
         $this->response = $responseBuilder->getResponse();
-        var_dump($this->response->payload);
-        // echo $this->response->payload;
+        
+        echo $this->response->payload;
     }
 
 
