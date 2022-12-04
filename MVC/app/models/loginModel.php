@@ -26,5 +26,15 @@ class loginModel{
         }
 
     }
+
+    public function getEmail($user_ID){
+        $this->db->query("SELECT email FROM user WHERE userID = :user_ID");
+        $this->db->bind(':user_ID',$user_ID);
+        return $this->db->getColumn();
+
+    }
+
+
+ 
 }
 ?>

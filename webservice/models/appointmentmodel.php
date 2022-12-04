@@ -64,16 +64,18 @@ class AppointmentModel
      */
     function addAppointment($data)
     {
-        $query = "INSERT INTO appointments(client_ID, date_Time, donor_Name, user_ID) 
-                    values (:client_ID, :date_Time, :donor_Name, :user_ID)";
+        $query = "INSERT INTO appointments(client_ID, hospital_ID, user_ID, date_time, donor_name, donor_email) 
+                    values (:client_ID, :hospital_ID, :user_ID, :date_Time, :donor_Name, :donor_email)";
 
         $statement = $this->conn->prepare($query);
 
         $statement->bindParam(':client_ID', $data["client_ID"], PDO::PARAM_INT);
+        $statement->bindParam(':hospital_ID', $data["hospital_ID"], PDO::PARAM_INT);
+        $statement->bindParam(':user_ID', $data["user_ID"], PDO::PARAM_INT);
         $statement->bindParam(':date_Time', $data["date_Time"], PDO::PARAM_STR);
         $statement->bindParam(':donor_Name', $data["donor_Name"], PDO::PARAM_STR);
-        $statement->bindParam(':user_ID', $data["user_ID"], PDO::PARAM_INT);
-        
+        $statement->bindParam(':donor_email', $data["email"], PDO::PARAM_STR);
+
         return $statement->execute();
     }
 

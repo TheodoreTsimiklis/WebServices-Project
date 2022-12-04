@@ -5,7 +5,9 @@
                     <section class="position-relative py-4 py-xl-5">
                         <div class="container">
                             <div class="d-flex justify-content-center" style="border-color: rgb(194,218,242);">
-                                <p class="fs-4 border rounded-0 border-2 border-secondary">Appointment Status message goes here&nbsp;</p>
+                                <p class="fs-4 border rounded-0 border-2 border-secondary">
+                                    <?php echo $data?>
+                                </p>
                             </div>
                             <div class="fs-5 d-flex justify-content-center" style="border-color: rgb(194,218,242);"><a href="#">View My Appointments</a></div>
                         </div>

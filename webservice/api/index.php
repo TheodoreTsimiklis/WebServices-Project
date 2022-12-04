@@ -264,6 +264,7 @@ class API
         $statuscode = 0;
         $statustext = "";
         $contenttype = "";
+        $customtoken = "";
 
 
         $appointmentStatus = $this->controller->createAppointment($data);
@@ -273,11 +274,16 @@ class API
         if (!is_null($rawpayload)) {
             $statuscode = 200;
             $statustext = "OK";
+            $customtoken = 'Bearer ' . $this->jwt;
+
+
         } else { // 0 rows in the databasse because the resource was not found
             $statuscode = 404;
             $statustext = "Not Found";
-
+            
             $rawpayload = array('message' => "Possibly invalid enpoint.");
+
+            $customtoken = 'Bearer ' . $this->jwt;
         }
 
         // How do we decide what is the response content-type?
@@ -286,15 +292,19 @@ class API
                 // Serialize the array of objects into a JSON array
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
                 break;
+
             case 'application/xml':
                 break;
+
             default:
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
         }
         //set up the headerfields that will be sent to the response builder
-        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'WWW-Authenticate' => $jwt];
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
 
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
@@ -304,9 +314,9 @@ class API
 
         // for printing the payload response
         if ($responseBody->appointmentStatus) {
-            echo "</br><br>APPOINTMENT BOOKING SUCCESSFUL FOR " . $data['donor_Name'] . " ON " . date("F-d-Y", strtotime($data['date_Time'])) . ", " . date("h:i", strtotime($data['date_Time']));
+            echo "APPOINTMENT BOOKING SUCCESSFUL FOR " . $data['donor_Name'] . " ON " . date("F-d-Y", strtotime($data['date_Time'])) . ", " . date("h:i", strtotime($data['date_Time'])) . ", Email: " . $data['email'];
         } else {
-            echo "</br></br>APPOINTMENT BOOKING FAILED";
+            echo "APPOINTMENT BOOKING FAILED";
         }
     }
 
