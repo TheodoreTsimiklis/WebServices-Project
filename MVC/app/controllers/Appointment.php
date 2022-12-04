@@ -71,32 +71,33 @@ class Appointment extends Controller
         Creates a POST request to create an appointment in the web service
      */
     public function createAppointment() {
-        $ch = curl_init();
-        $url = "http://localhost/WebServices-Project/webservice/api/appointments/"; // set url
-        $data = json_encode(array(
+        // $ch = curl_init();
+        // $url = "http://localhost/WebServices-Project/webservice/api/appointments/"; // set url
+        $data = array(
             "api_Key" => "abcd123",
             "user_ID" =>  $_SESSION['user_id'],
             "donor_Name" => $_SESSION['name'],
-            "date_Time" => $_POST['appointmenttime'], //using this date and time for now since there is no form created yet
-        )); 
+            "date_Time" => $_POST['datetime'],
+            "hospital" => $_POST['hospital'] //using this date and time for now since there is no form created yet
+        );
+        var_dump($data);
+        // curl_setopt($ch, CURLOPT_URL,$url); 
 
-        curl_setopt($ch, CURLOPT_URL,$url); 
-
-        curl_setopt($ch, CURLOPT_POST, 1);
+        // curl_setopt($ch, CURLOPT_POST, 1);
         
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json", 'Accept: application/json', 'Expect:', 'Content-Length: ' . strlen($data), 'Authorization: ' . $this->jwt, 'X-API-Key: abcd123'));
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json", 'Accept: application/json', 'Expect:', 'Content-Length: ' . strlen($data), 'Authorization: ' . $this->jwt, 'X-API-Key: abcd123'));
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         
-        // Execute
-        $response = curl_exec($ch);
-        if( $response != null || $response != FALSE || $response != '' ) {
-            echo $response;
-        // Closing the connection
-        curl_close($ch);
-        }
+        // // Execute
+        // $response = curl_exec($ch);
+        // if( $response != null || $response != FALSE || $response != '' ) {
+        //     echo $response;
+        // // Closing the connection
+        // curl_close($ch);
+        // }
     }
 
     /*
