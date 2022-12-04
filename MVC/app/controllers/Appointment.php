@@ -23,8 +23,10 @@ class Appointment extends Controller
         }            
         // if you have the jwt already
         if (isset($this->jwt)) { 
+            // echo $this->jwt;
             // go to the view page and send the list of hospitals
             if (isset($_POST['submit'])) {  // POST : clcked Book an appointment button
+                // echo "goes here";
                 $this->createAppointment();
             }
             else { 
@@ -81,6 +83,8 @@ class Appointment extends Controller
             "hospital" => $_POST['hospital'] //using this date and time for now since there is no form created yet
         );
         var_dump($data);
+
+        
         // curl_setopt($ch, CURLOPT_URL,$url); 
 
         // curl_setopt($ch, CURLOPT_POST, 1);
