@@ -33,19 +33,19 @@ class AppointmentModel
     }
 
     // Retrieve the appointments  for a specific client using the client's api key
-    function list($apikey)
+    function getUserAppointments($data)
     {
-
         $query = 'SELECT *
                     FROM appointments
-                    WHERE clientid =
-                            (SELECT id 
+                    WHERE user_ID = :user_ID
+                    AND client_ID =
+                            (SELECT client_ID 
                             FROM clients
-                            WHERE api_Key = :apikey)';
+                            WHERE api_key = :api_key)';
 
         $statement = $this->conn->prepare($query);
-
-        $statement->bindParam(':apikey', $apikey, PDO::PARAM_INT);
+        $statement->bindParam(':user_ID', $data['user_ID'], PDO::PARAM_INT);
+        $statement->bindParam(':api_key', $data['api_key'], PDO::PARAM_STR);
 
         $statement->execute();
 
@@ -54,10 +54,6 @@ class AppointmentModel
 
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
-
-    
-
-
 
     /**
      * add a new appointment  
@@ -104,6 +100,7 @@ class AppointmentModel
 
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
+
 }
 
 

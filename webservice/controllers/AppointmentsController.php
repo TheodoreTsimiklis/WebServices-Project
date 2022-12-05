@@ -36,6 +36,11 @@ class AppointmentsController {
         
         return $result; // returns to index.php method processPostResponse
     }
+
+    function getUserAppointments($data) {
+        $result = $this->appointmentModel->getUserAppointments($data); 
+        return $result;
+    }
 }
 
 ?>

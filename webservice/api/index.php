@@ -44,8 +44,10 @@ class API
         $this->auth = new AuthToken();
         $requestBuilder = new RequestBuilder();
         $this->request = $requestBuilder->getRequest();
-
+        echo "hello";
         $controllername = ucfirst($this->request->urlparams["resource"]) . "Controller";
+        $user_ID = $this->request->urlparams['id'];
+
         if (class_exists($controllername)) { 
             $this->controller = new $controllername();
         } else {
@@ -57,7 +59,7 @@ class API
         switch ($this->request->method) {
             case 'GET':
                 if ($controllername == "AppointmentsController")
-                    $this->processGetResponse();
+                    $this->processGetUserAppointmentsResponse();             
                 if ($controllername == "AuthController")
                     $this->processGetAuthResponse();
                 if ($controllername == "HospitalsController")
@@ -79,90 +81,6 @@ class API
                 break;
 
         }
-    }
-
-    /**
-     * @OA\Get(
-     *     tags={"JWT Authentication"},
-     *     path="/webservice/api/auth/",
-     *     summary="Create JWT",
-     *     security={{ "Bearer":{} }},
-     * 
-     * @OA\Parameter(
-     *     name="X-API-Key",
-     *     in="header",
-     *     required=true,
-     *         @OA\Schema(
-     *              type="http"
-     *         ) 
-     *      ), 
-     * @OA\SecurityScheme(
-     *      securityScheme="bearerAuth",
-     *      in="header",
-     *      name="Authorization",
-     *      type="http",
-     *      scheme="Bearer",
-     *      bearerFormat="JWT",
-     * ),
-     *     @OA\Response(response="401", description="Unauthorized"),
-     *     @OA\Response(response="200", description="Success"),
-     * )
-     */ 
-    // method that process the GET response
-    function processGetResponse()
-    {
-        // Read the API key sent by the client
-        $apikey = $this->request->urlparams['apikey'];
-
-        $resourceID = $this->request->urlparams['id'];
-
-        // Determine the reponse properties
-        $header = array();
-        $payload = array();
-        $statuscode = 0;
-        $statustext = "";
-        $contenttype = "";
-
-        // Get the data/resource
-        $rawpayload = $this->controller->list($apikey, $resourceID);
-
-        // Check if data  was returned: the data here is the requested resource
-        // If the data is found and can be returned
-        // The HTTP status code of the response should be: 200
-        if (count($rawpayload) > 0) {
-
-            $statuscode = 200;
-            $statustext = "OK";
-
-        } else {
-
-            $statuscode = 404;
-            $statustext = "Not Found";
-
-            $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
-
-        }
-
-        // How do we decide what is the response content-type?
-        switch ($this->request->header['Accept']) {
-
-            case 'application/json':
-                // Serialize the array of objects into a JSON array
-                $payload = json_encode($rawpayload);
-                $contenttype = 'application/json';
-                break;
-            case 'application/xml':
-                break;
-            default:
-                $payload = json_encode($rawpayload);
-                $contenttype = 'application/json';
-        }
-
-        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype];
-
-        $responseBuilder = new Responsebuilder($headerfields, $payload);
-
-        $this->response = $responseBuilder->getResponse();
     }
 
     public function processGetHospitalResponse() {
@@ -193,8 +111,6 @@ class API
 
             $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
             $customtoken = 'Bearer ' . $this->jwt;
-
-
         }
 
         // How do we decide what is the response content-type?
@@ -225,6 +141,65 @@ class API
         echo $this->response->payload;
     }
 
+    public function processGetUserAppointmentsResponse() {
+        $this->verifyAuthorizationHeader();
+        $api_key = $this->request->header['X-API-Key'];
+        $user_ID = $this->request->urlparams['id'];
+
+        $data = [
+            'api_key' => $api_key,
+            'user_ID' => $user_ID,
+        ];
+        // Determine the reponse properties
+        $header = array();
+        $payload = array();
+        $statuscode = 0;
+        $statustext = "";
+        $contenttype = "";
+        $customtoken = "";
+        // Get the data/resource
+        $rawpayload = $this->controller->getUserAppointments($data);
+        // Check if data  was returned: the data here is the requested resource
+        // If the data is found and can be returned
+        // The HTTP status code of the response should be: 200
+        if (count($rawpayload) > 0) {
+            $statuscode = 200;
+            $statustext = "OK";
+
+        } else {
+            $statuscode = 404;
+            $statustext = "Not Found";
+
+            $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
+        }
+
+        // How do we decide what is the response content-type?
+        switch ($this->request->header['Accept']) {
+
+            case 'application/json':
+                // Serialize the array of objects into a JSON array
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+
+                break;
+            case 'application/xml':
+                break;
+            default:
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+
+        }
+
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
+
+        $responseBuilder = new Responsebuilder($headerfields, $payload);
+
+        $this->response = $responseBuilder->getResponse();
+        
+        echo $this->response->payload;
+    }
 
     /**
      * @OA\Post  (
@@ -320,7 +295,6 @@ class API
         }
     }
 
-
     function verifyAuthorizationHeader() {
         try {
             $Authorization = $this->request->header["Authorization"];
@@ -358,9 +332,11 @@ class API
         if (!empty($jwt_token)) {
             $statuscode = 200;
             $statustext = "OK";
+            $customtoken = "Bearer " . $jwt_token;
         } else {
             $statuscode = 401;
             $statustext = "Unauthorized";
+            $customtoken = "Bearer " . $jwt_token;
         }
         // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) {

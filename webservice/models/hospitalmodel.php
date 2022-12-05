@@ -66,7 +66,6 @@ class HospitalModel
         return $statement->fetch(PDO::FETCH_NUM); // fetch number 
     }
 
-
     function getHospitalsList(){
         $query= 'SELECT * FROM hospitals';
 

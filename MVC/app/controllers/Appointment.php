@@ -133,13 +133,13 @@ class Appointment extends Controller
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         // Retudn headers seperatly from the Response Body
 
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
 
         $headers = $this->get_headers_from_curl_response($response);
+    
         $this->jwt = $headers["Custom-Token"];
 
     }
@@ -165,8 +165,136 @@ class Appointment extends Controller
 
     
     public function view_appointments()
-    {
-        $this->view('Appointment/view_appointments');
+    {     
+        if(!isset($this->jwt)) {
+            // generate token first 
+            $this->generateToken();
+        }
+        // if you have the jwt already
+        if (isset($this->jwt)) {    
+            // get all appointments of a user
+            $url = "http://localhost/WebServices-Project/webservice/api/appointments/".$_SESSION['user_id'];
 
+            $ch = curl_init();
+            $data = array(
+                'Accept: application/json',
+                'Content-Type: application/json',
+                'Authorization: ' . $this->jwt,
+                'X-API-Key: abcd123');
+            //return the transfer as a string
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $data);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
+            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            // Retudn headers seperatly from the Response Body
+
+            $response = curl_exec($ch);
+            $this->view('Appointment/view_appointments', $response);
+        }
+      
     }
 }
+
+//
+//   $curl = curl_init();
+//         curl_setopt_array($curl, array(
+
+//           CURLOPT_URL => "http://localhost/WebServices-Project/webservice/api/appointments/".$_SESSION['user_id'].'/',
+
+//           CURLOPT_RETURNTRANSFER => true,
+
+//           CURLOPT_ENCODING => "",
+
+//           CURLOPT_MAXREDIRS => 10,
+
+//           CURLOPT_TIMEOUT => 30,
+
+//           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+
+//           CURLOPT_CUSTOMREQUEST => "PUT",
+
+//           curl_setopt($ch, CURLOPT_POSTFIELDS, [
+
+//             'first_name' => 'Demo',
+
+//             'last_name' => 'Test',
+
+//             'email' => 'demo@gmail.com'
+
+//         ]),
+
+//           CURLOPT_HTTPHEADER => array(
+
+//             "cache-control: no-cache",
+
+//             "content-type: application/json",
+
+//             "x-api-key: whateveriyouneedinyourheader"
+
+//           ),
+
+//         ));
+
+
+//         $response = curl_exec($curl);
+
+//         $err = curl_error($curl);
+
+
+//         curl_close($curl);
+
+
+//         if ($err) {
+
+//           echo "cURL Error #:" . $err;
+
+//         } else {
+
+//           echo $response;
+
+//         }
+
+
+
+//         $ch = curl_init();
+//         $url = "http://localhost/WebServices-Project/webservice/api/appointments/"; // set url
+        
+//         // get user email
+//         $email = $this->loginModel->getEmail($_SESSION['user_id']);
+
+//         $data = json_encode(array(
+//             "api_Key" => "abcd123",
+//             "user_ID" =>  $_SESSION['user_id'],
+//             "donor_Name" => $_SESSION['name'],
+//             "date_Time" => $_POST['datetime'],
+//             "hospital" => $_POST['hospital'], //using this date and time for now since there is no form created yet
+//             "email" => $email,
+//         ));
+//         // var_dump($data);
+
+//         curl_setopt($ch, CURLOPT_URL,$url); 
+
+//         curl_setopt($ch, CURLOPT_POST, 1);
+        
+//         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+//         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json", 'Accept: application/json', 'Expect:', 'Content-Length: ' . strlen($data), 'Authorization: ' . $this->jwt, 'X-API-Key: abcd123'));
+
+//         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        
+//         // Execute
+//         $response = curl_exec($ch);
+//         // if( $response != null || $response != FALSE || $response != '' ) {
+//         //     echo $response;
+//         // // Closing the connection
+//         // curl_close($ch);
+//         // }
+
+//         curl_close($ch);
+
+//         return $response;
+
+
+//         $this->view('Appointment/view_appointments');

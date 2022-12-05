@@ -1,6 +1,6 @@
 <?php require APPROOT . '/views/includes/header.php';  ?>
 
- <h1 class="d-flex justify-content-center">Hello, John!</h1>
+ <h1 class="d-flex justify-content-center">Hello, <?php echo $_SESSION['name']?></h1>
             <div class="row mb-5">
                 <div class="col">
                     <div></div>

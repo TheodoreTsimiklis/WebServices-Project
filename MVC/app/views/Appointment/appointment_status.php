@@ -9,7 +9,7 @@
                                     <?php echo $data?>
                                 </p>
                             </div>
-                            <div class="fs-5 d-flex justify-content-center" style="border-color: rgb(194,218,242);"><a href="#">View My Appointments</a></div>
+                            <div class="fs-5 d-flex justify-content-center" style="border-color: rgb(194,218,242);"><a href="<?php echo URLROOT; ?>/appointment/view_appointments">View My Appointments</a></div>
                         </div>
                     </section>
                 </div>
