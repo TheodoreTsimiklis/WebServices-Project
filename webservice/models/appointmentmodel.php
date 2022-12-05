@@ -35,8 +35,10 @@ class AppointmentModel
     // Retrieve the appointments  for a specific client using the client's api key
     function getUserAppointments($data)
     {
-        $query = 'SELECT *
+        $query = 'SELECT appointments.appointment_ID, appointments.client_ID, appointments.user_ID, appointments.hospital_ID, appointments.date_time,
+            hospitals.hospital_name, hospitals.hospital_street, hospitals.city, hospitals.province, hospitals.postal_code
                     FROM appointments
+                    INNER JOIN hospitals ON appointments.hospital_ID = hospitals.hospital_ID
                     WHERE user_ID = :user_ID
                     AND client_ID =
                             (SELECT client_ID 

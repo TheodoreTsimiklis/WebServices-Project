@@ -44,10 +44,9 @@ class API
         $this->auth = new AuthToken();
         $requestBuilder = new RequestBuilder();
         $this->request = $requestBuilder->getRequest();
-        echo "hello";
         $controllername = ucfirst($this->request->urlparams["resource"]) . "Controller";
-        $user_ID = $this->request->urlparams['id'];
-
+        // $user_ID = $this->request->urlparams['id'];
+        // echo $controllername."/".$user_ID;
         if (class_exists($controllername)) { 
             $this->controller = new $controllername();
         } else {
@@ -71,6 +70,7 @@ class API
                 break;
             case 'PUT':
                 // for modifying appointments
+                $this->processPutResponse();
                 break;
             case 'DELETE':
                 // to remove an appointment
@@ -103,14 +103,12 @@ class API
         if (count($rawpayload) > 0) {
             $statuscode = 200;
             $statustext = "OK";
-            $customtoken = 'Bearer ' . $this->jwt;
 
         } else {
             $statuscode = 404;
             $statustext = "Not Found";
 
             $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
-            $customtoken = 'Bearer ' . $this->jwt;
         }
 
         // How do we decide what is the response content-type?
@@ -229,10 +227,7 @@ class API
         $this->verifyAuthorizationHeader();
 
         $json = file_get_contents('php://input');
-
-
         $data = json_decode($json, true);
-
 
         $header = array();
         $payload = array();
@@ -241,8 +236,71 @@ class API
         $contenttype = "";
         $customtoken = "";
 
-
         $appointmentStatus = $this->controller->createAppointment($data);
+
+        $rawpayload = array("appointmentStatus" => $appointmentStatus);
+
+        if (!is_null($rawpayload)) {
+            $statuscode = 200;
+            $statustext = "OK";
+
+
+        } else { // 0 rows in the databasse because the resource was not found
+            $statuscode = 404;
+            $statustext = "Not Found";
+            $rawpayload = array('message' => "Possibly invalid enpoint.");
+
+        }
+
+        // How do we decide what is the response content-type?
+        switch ($this->request->header['Accept']) { // Making sure we know what the client wants -> we are generalizing/assuming that we know that we know what the client wants back(Accept)
+            case 'application/json':
+                // Serialize the array of objects into a JSON array
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+                break;
+
+            case 'application/xml':
+                break;
+
+            default:
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+        }
+        //set up the headerfields that will be sent to the response builder
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
+
+        $responseBuilder = new Responsebuilder($headerfields, $payload);
+
+        $this->response = $responseBuilder->getResponse(); // which returns a response objec
+
+        $responseBody = json_decode($this->response->payload);
+
+        // for printing the payload response
+        if ($responseBody->appointmentStatus) {
+            echo "APPOINTMENT BOOKING SUCCESSFUL FOR " . $data['donor_Name'] . " ON " . date("F-d-Y", strtotime($data['date_Time'])) . ", " . date("h:i", strtotime($data['date_Time'])) . ", Email: " . $data['email'];
+        } else {
+            echo "APPOINTMENT BOOKING FAILED";
+        }
+    }
+
+    public function processPutResponse() {
+        $this->verifyAuthorizationHeader();
+
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $appointment_ID = $this->request->urlparams['id'];
+
+        $header = array();
+        $payload = array();
+        $statuscode = 0;
+        $statustext = "";
+        $contenttype = "";
+        $customtoken = "";
+
+        $appointmentStatus = $this->controller->updateAppointment($data, $appointment_ID);
 
         $rawpayload = array("appointmentStatus" => $appointmentStatus);
 
@@ -284,15 +342,9 @@ class API
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
         $this->response = $responseBuilder->getResponse(); // which returns a response objec
+        
+        echo $this->response->payload;
 
-        $responseBody = json_decode($this->response->payload);
-
-        // for printing the payload response
-        if ($responseBody->appointmentStatus) {
-            echo "APPOINTMENT BOOKING SUCCESSFUL FOR " . $data['donor_Name'] . " ON " . date("F-d-Y", strtotime($data['date_Time'])) . ", " . date("h:i", strtotime($data['date_Time'])) . ", Email: " . $data['email'];
-        } else {
-            echo "APPOINTMENT BOOKING FAILED";
-        }
     }
 
     function verifyAuthorizationHeader() {
@@ -332,11 +384,10 @@ class API
         if (!empty($jwt_token)) {
             $statuscode = 200;
             $statustext = "OK";
-            $customtoken = "Bearer " . $jwt_token;
+           
         } else {
             $statuscode = 401;
             $statustext = "Unauthorized";
-            $customtoken = "Bearer " . $jwt_token;
         }
         // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) {
@@ -352,7 +403,8 @@ class API
                 $contenttype = 'application/json';
         }
 
-        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 
+                'Custom-Token' => $customtoken];
 
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 

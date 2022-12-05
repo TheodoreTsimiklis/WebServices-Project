@@ -19,7 +19,7 @@
                         echo '</select>';
                         ?>
                             <label class="form-label fs-3 fw-bold" style="margin-top: 11px;">Date and Time:</label>
-                                <input class="border-1 form-control form-control-lg" type="datetime-local" name="datetime" id="datetime">
+                                <input class="border-1 form-control form-control-lg" type="datetime-local" name="datetime" id="datetime"  min="2022-12-05T00:00" max="2023-12-05T00:00">
                             <div class="d-flex justify-content-center">
                                 
                             <button class="btn btn-danger fs-3" type="submit" name="submit" style="padding-top: 6px;margin-top: 83px;">Book Appointment</button>
