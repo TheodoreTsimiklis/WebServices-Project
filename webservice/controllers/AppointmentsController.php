@@ -41,6 +41,13 @@ class AppointmentsController {
         $result = $this->appointmentModel->getUserAppointments($data); 
         return $result;
     }
+
+    function updateAppointment($data, $appointment_ID){
+        $arr = [
+
+        ];
+        $this->appointmentModel->updateAppointment($arr);
+    }
 }
 
 ?>

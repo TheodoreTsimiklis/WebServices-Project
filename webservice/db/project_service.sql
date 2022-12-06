@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2022 at 08:50 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Dec 06, 2022 at 09:22 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -37,6 +37,19 @@ CREATE TABLE `appointments` (
   `donor_email` varchar(60) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `appointments`
+--
+
+INSERT INTO `appointments` (`appointment_ID`, `client_ID`, `hospital_ID`, `user_ID`, `date_time`, `donor_name`, `donor_email`) VALUES
+(1, 1, 1, 1, '2022-12-12 11:01:00', 'Chi Castro', 'chil@yahoo.ca'),
+(2, 1, 1, 1, '2022-12-12 11:01:00', 'Chi Castro', 'chil@yahoo.ca'),
+(3, 2, 8, 1, '2022-12-12 11:01:00', 'Mary Doe', 'marydoe@yahoo.ca'),
+(4, 1, 1, 1, '2022-12-29 10:00:00', 'Chi Castro', 'chil@yahoo.ca'),
+(5, 1, 1, 1, '2022-12-29 10:00:00', 'Chi Castro', 'chil@yahoo.ca'),
+(6, 1, 2, 1, '2022-12-13 11:01:00', 'Chi Castro', 'chil@yahoo.ca'),
+(7, 1, 2, 1, '2022-12-07 02:40:00', 'Chi Castro', 'chil@yahoo.ca');
+
 -- --------------------------------------------------------
 
 --
@@ -47,10 +60,18 @@ CREATE TABLE `clients` (
   `client_ID` int(10) NOT NULL,
   `client_name` varchar(50) NOT NULL,
   `api_key` varchar(100) NOT NULL,
-  `license_num` int(10) NOT NULL,
+  `license_num` varchar(100) NOT NULL,
   `license_start_date` date NOT NULL,
   `license_end_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `clients`
+--
+
+INSERT INTO `clients` (`client_ID`, `client_name`, `api_key`, `license_num`, `license_start_date`, `license_end_date`) VALUES
+(1, 'Blood Donation Company A', 'abcd123', '64char', '2022-11-09', '2023-12-31'),
+(2, 'Blood Donation Company B', 'apikey123', '64char', '2022-11-08', '2023-12-12');
 
 -- --------------------------------------------------------
 
@@ -67,11 +88,11 @@ CREATE TABLE `hospitals` (
   `postal_code` varchar(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-  --
-  -- dumping data in hospital table
-  --
+--
+-- Dumping data for table `hospitals`
+--
 
-  INSERT INTO `hospitals` (`hospital_id`, `hospital_name`, `hospital_street`, `city`, `province`, `postal_code`) VALUES
+INSERT INTO `hospitals` (`hospital_id`, `hospital_name`, `hospital_street`, `city`, `province`, `postal_code`) VALUES
 (1, 'St. Marys Hospital Center', '3830 Av. Lacombe', 'Montreal', 'QC', 'H3T 1M5'),
 (2, 'Lachine Hospital (MUHC)', '650 16 Ave', 'Lachine', 'QC', 'H8S 3N5'),
 (3, 'LaSalle Hospital', '8585 Terr. Champlain', 'Lasalle', 'QC', 'H8P 1C1'),
@@ -90,7 +111,6 @@ CREATE TABLE `hospitals` (
 (16, 'Montreal Heart Institute', '5000 Rue Bélanger', 'Montreal', 'QC', 'H1T 1C8'),
 (17, 'Montreal Chest Institute (MUHC)', '1001 Decarie Blvd', 'Montreal', 'QC', 'H4A 3J1'),
 (18, 'Montreal Neurological Hospital (MUHC)', '3801 Rue University', 'Montreal', 'QC', 'H3A 2B4');
-
 
 --
 -- Indexes for dumped tables
@@ -124,19 +144,19 @@ ALTER TABLE `hospitals`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `appointment_ID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `appointment_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `client_ID` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `client_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `hospitals`
 --
 ALTER TABLE `hospitals`
-  MODIFY `hospital_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `hospital_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables

@@ -300,9 +300,8 @@ class API
         $contenttype = "";
         $customtoken = "";
 
-        $appointmentStatus = $this->controller->updateAppointment($data, $appointment_ID);
+        $rawpayload = $this->controller->updateAppointment($data, $appointment_ID);
 
-        $rawpayload = array("appointmentStatus" => $appointmentStatus);
 
         if (!is_null($rawpayload)) {
             $statuscode = 200;
