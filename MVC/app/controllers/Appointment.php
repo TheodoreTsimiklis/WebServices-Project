@@ -2,6 +2,7 @@
 class Appointment extends Controller
 {
     private $jwt;
+
     /*
      Default constructor for the About
      */ 
@@ -104,11 +105,6 @@ class Appointment extends Controller
         
         // Execute
         $response = curl_exec($ch);
-        // if( $response != null || $response != FALSE || $response != '' ) {
-        //     echo $response;
-        // // Closing the connection
-        // curl_close($ch);
-        // }
 
         curl_close($ch);
 
@@ -163,9 +159,8 @@ class Appointment extends Controller
         return $headers;
     }
 
-    
     public function view_appointments()
-    {     
+    {    
         if(!isset($this->jwt)) {
             // generate token first 
             $this->generateToken();
@@ -188,10 +183,10 @@ class Appointment extends Controller
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); 
             curl_setopt($ch, CURLINFO_HEADER_OUT, true);
             curl_setopt($ch, CURLOPT_URL, $url);
-            // Retudn headers seperatly from the Response Body
-
+            // Return headers seperatly from the Response Body
             $response = curl_exec($ch);
             $this->view('Appointment/view_appointments', $response);
+    
         }
       
     }
@@ -202,8 +197,11 @@ class Appointment extends Controller
         }
         // if you have the jwt already
         if (isset($this->jwt)) {   
+            // get specific appointment
+            // $this->getUpdateAppointment($appointment_ID);
+
             // do PUT here
-            if (isset($_POST['submit'])) {  
+            if (isset($_POST['submit'])) {          // after u change the date
             //The URL that we want to send a PUT request to.
                 $url = "http://localhost/WebServices-Project/webservice/api/appointments/".$appointment_ID;
 
@@ -219,7 +217,8 @@ class Appointment extends Controller
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-type: application/json", 
                                         'Accept: application/json', 'Expect:', 
                                         'Content-Length: ' . strlen($data), 
-                                        'Authorization: ' . $this->jwt, 'X-API-Key: abcd123'));
+                                        'Authorization: ' . $this->jwt, 
+                                        'X-API-Key: abcd123'));
 
                 $fields = array(
                     "api_Key" => "abcd123",

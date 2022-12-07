@@ -286,6 +286,9 @@ class API
         }
     }
 
+    /*
+    
+    */
     public function processPutResponse() {
         $this->verifyAuthorizationHeader();
 
@@ -302,12 +305,10 @@ class API
 
         $rawpayload = $this->controller->updateAppointment($data, $appointment_ID);
 
-
         if (!is_null($rawpayload)) {
             $statuscode = 200;
             $statustext = "OK";
             $customtoken = 'Bearer ' . $this->jwt;
-
 
         } else { // 0 rows in the databasse because the resource was not found
             $statuscode = 404;
@@ -354,8 +355,6 @@ class API
 
             $apikey = $this->request->header["X-API-Key"];
             $decodedpayload = $this->auth->verifyToken($this->jwt, $apikey);
-
-
         } catch (Exception $e) {
             echo 'Caught exception: ', $e->getMessage(), "\n";
         }
@@ -415,6 +414,5 @@ class API
 $api = new API();
 
 $api->processRequest();
-// var_dump($api->response->payload);
 
 ?>

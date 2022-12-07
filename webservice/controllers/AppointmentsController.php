@@ -21,7 +21,6 @@ class AppointmentsController {
         $hospital_ID = $data['hospital'];
         $email = $data['email'];
         
-        
         // Insert to database and at the same time return to the index
         $data =[
             'client_ID' => $this->appointmentModel->getClientID($api_Key),
@@ -32,21 +31,14 @@ class AppointmentsController {
             'email' => $email,
         ];
         $result = $this->appointmentModel->addAppointment($data);
-
-        
         return $result; // returns to index.php method processPostResponse
     }
-
     function getUserAppointments($data) {
-        $result = $this->appointmentModel->getUserAppointments($data); 
-        return $result;
+        return $this->appointmentModel->getUserAppointments($data); 
     }
 
     function updateAppointment($data, $appointment_ID){
-        $arr = [
-
-        ];
-        $this->appointmentModel->updateAppointment($arr);
+        return $this->appointmentModel->updateAppointment($data, $appointment_ID);
     }
 }
 

@@ -1,4 +1,5 @@
 <?php require APPROOT . '/views/includes/header.php';  ?>
+<?php var_dump($data) ?>
 <h1 class="d-flex justify-content-center">Update Appointment</h1>
             <div class="row d-flex justify-content-center">
                 <div class="col">

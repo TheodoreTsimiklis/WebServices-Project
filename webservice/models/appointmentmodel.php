@@ -90,7 +90,6 @@ class AppointmentModel
         return $statement->fetch(PDO::FETCH_NUM); // fetch number 
     }
 
-
     function getHospitalList($apikey){
         $query= 'SELECT * FROM hospitals';
 
@@ -102,6 +101,19 @@ class AppointmentModel
 
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
+
+   function updateAppointment($data, $appointment_ID) {
+        $query= 'UPDATE appointments 
+            SET date_time = :date_time 
+            WHERE appointment_ID = :appointment_ID 
+            AND user_ID = :user_ID';
+            
+        $statement = $this->conn->prepare($query);
+        $statement->bindParam(':date_Time', $data["date_Time"], PDO::PARAM_STR);
+        $statement->bindParam(':user_ID', $data["user_ID"], PDO::PARAM_INT);
+        $statement->bindParam(':date_Time', $appointment_ID, PDO::PARAM_INT);
+        return $statement->execute();
+   }
 
 }
 

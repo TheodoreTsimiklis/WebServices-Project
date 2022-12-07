@@ -6,16 +6,13 @@ class HospitalsController {
 
     private $hospitalsModel; //model
     
-    function __construct()
-    {
+    function __construct() {
         $this->hospitalsModel = new HospitalModel();
     }
 
     function getHospitalsList() {
         return $this->hospitalsModel->getHospitalsList();
     }
-      
-    
 }
 
 ?>

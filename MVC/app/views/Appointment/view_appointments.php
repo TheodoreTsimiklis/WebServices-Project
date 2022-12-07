@@ -15,7 +15,6 @@
                                                 <th>Hospital&nbsp;</th>
                                                 <th>Address</th>
                                                 <th>DateTime</th>
-                                                <!-- <th>Time</th> -->
                                                 <th class="text-center">Action&nbsp;</th>
                                             </tr>
                                         </thead>
@@ -33,13 +32,15 @@
                                                 echo '<td>'.$item['hospital_name'].'</td>';
 
                                                 echo '<td>'.$item['hospital_street']. ', '. $item['city'] . ', ' . $item['province'] . ' ' . $item['postal_code'] .  '</td>';
-
                                                 echo '<td>'.$item['date_time'].'</td>';
-                                                echo' <td>
+                                                echo '<td>
                                                         <a href="' .URLROOT . '/Appointment/update_appointment/'.$item['appointment_ID'].'">
-                                                            <button class="btn btn-warning" type="submit" style="margin-right: 8px;">Update</button>
+                                                            <button class="btn btn-warning" type="submit" name="updateSubmit" style="margin-right: 8px;">Update</button>
                                                         </a>
-                                                        <button class="btn btn-danger" type="button">Cancel</button>
+                            
+                                                        <a  style="text-decoration: none" href="' .URLROOT . '/Appointment/update_appointment/'.$item['appointment_ID'].'">
+                                                            <button class="btn btn-danger" type="submit" name="deleteSubmit">Cancel</button>
+                                                        </a>
                                                     </td>';
                                                 echo '</tr>';
                                                    
