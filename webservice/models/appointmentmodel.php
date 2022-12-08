@@ -33,7 +33,7 @@ class AppointmentModel
     }
 
     // Retrieve the appointments  for a specific client using the client's api key
-    function getUserAppointments($data)
+    function getUserAppointments($data, $appointment_ID)
     {
         $query = 'SELECT appointments.appointment_ID, appointments.client_ID, appointments.user_ID, appointments.hospital_ID, appointments.date_time,
             hospitals.hospital_name, hospitals.hospital_street, hospitals.city, hospitals.province, hospitals.postal_code
@@ -46,6 +46,16 @@ class AppointmentModel
                             WHERE api_key = :api_key)';
 
         $statement = $this->conn->prepare($query);
+
+        if($appointment_ID != ""){
+            $query = $query . ' AND appointments.appointment_ID = :appointment_ID';
+            
+            $statement = $this->conn->prepare($query);
+
+            $statement->bindParam(':appointment_ID', $appointment_ID, PDO::PARAM_INT);
+
+        }
+
         $statement->bindParam(':user_ID', $data['user_ID'], PDO::PARAM_INT);
         $statement->bindParam(':api_key', $data['api_key'], PDO::PARAM_STR);
 
@@ -105,16 +115,44 @@ class AppointmentModel
    function updateAppointment($data, $appointment_ID) {
         $query= 'UPDATE appointments 
             SET date_time = :date_time 
-            WHERE appointment_ID = :appointment_ID 
-            AND user_ID = :user_ID';
+            WHERE appointment_ID = :appointment_ID';
             
         $statement = $this->conn->prepare($query);
-        $statement->bindParam(':date_Time', $data["date_Time"], PDO::PARAM_STR);
-        $statement->bindParam(':user_ID', $data["user_ID"], PDO::PARAM_INT);
-        $statement->bindParam(':date_Time', $appointment_ID, PDO::PARAM_INT);
+        $statement->bindParam(':date_time', $data["date_Time"], PDO::PARAM_STR);
+        $statement->bindParam(':appointment_ID', $appointment_ID, PDO::PARAM_STR);
         return $statement->execute();
    }
 
+
+    function getSingleAppointment($data){
+        $query = "SELECT hospital_name FROM hospitals 
+                    WHERE appointment_ID = :appointment_ID";
+
+        $statement = $this->conn->prepare($query);
+
+        $statement->execute();
+
+        return $statement->fetchColumn();   // only return hospital's name, just a string
+    
+    }
+
 }
+
+
+
+$query = 'SELECT appointments.appointment_ID, appointments.client_ID, appointments.user_ID, appointments.hospital_ID, appointments.date_time,
+            hospitals.hospital_name
+                    FROM appointments
+                    INNER JOIN hospitals ON appointments.hospital_ID = hospitals.hospital_ID
+                    WHERE user_ID = :user_ID AND appointments.appointment_ID = :appointment_ID
+                    AND client_ID =
+                            (SELECT client_ID 
+                            FROM clients
+                            WHERE api_key = :api_key)';
+
+        $statement = $this->conn->prepare($query);
+        $statement->bindParam(':user_ID', $data['user_ID'], PDO::PARAM_INT);
+        $statement->bindParam(':api_key', $data['api_key'], PDO::PARAM_STR);
+        $statement->bindParam(':appointment_ID', $data['appointment_ID'], PDO::PARAM_INT);
 
 

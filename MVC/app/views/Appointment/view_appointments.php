@@ -34,7 +34,7 @@
                                                 echo '<td>'.$item['hospital_street']. ', '. $item['city'] . ', ' . $item['province'] . ' ' . $item['postal_code'] .  '</td>';
                                                 echo '<td>'.$item['date_time'].'</td>';
                                                 echo '<td>
-                                                        <a href="' .URLROOT . '/Appointment/update_appointment/'.$item['appointment_ID'].'">
+                                                        <a href="' .URLROOT . '/Appointment/get_An_appointment/'.$item['appointment_ID'].'">
                                                             <button class="btn btn-warning" type="submit" name="updateSubmit" style="margin-right: 8px;">Update</button>
                                                         </a>
                             

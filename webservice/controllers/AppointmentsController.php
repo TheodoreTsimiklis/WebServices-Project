@@ -33,13 +33,24 @@ class AppointmentsController {
         $result = $this->appointmentModel->addAppointment($data);
         return $result; // returns to index.php method processPostResponse
     }
-    function getUserAppointments($data) {
-        return $this->appointmentModel->getUserAppointments($data); 
+    function getUserAppointments($data, $appointment_ID) {
+        return $this->appointmentModel->getUserAppointments($data, $appointment_ID); 
     }
 
     function updateAppointment($data, $appointment_ID){
         return $this->appointmentModel->updateAppointment($data, $appointment_ID);
     }
+
+    function getSingleAppointment($data){
+        return $this->appointmentModel->getSingleAppointment($data);
+    }
+
+
+
+
+
+
+
 }
 
 ?>

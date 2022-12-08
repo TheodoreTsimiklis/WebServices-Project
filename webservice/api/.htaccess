@@ -2,4 +2,4 @@ RewriteEngine on
 
 RewriteBase "/WebServices-Project/webservice/api/"
 
-RewriteRule (.*)/(.*) index.php?resource=$1&id=$2 [QSA]
+RewriteRule (.*)/(.*)/(.*) index.php?resource=$1&id=$2&anotherid=$3 [QSA]

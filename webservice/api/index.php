@@ -12,7 +12,6 @@ function auto_loader($class)
 {
     if (file_exists(dirname(__DIR__) . "/controllers/" . $class . ".php"))
         require(dirname(__DIR__) . "/controllers/" . $class . ".php");
-
 }
 
 /**
@@ -47,18 +46,18 @@ class API
         $controllername = ucfirst($this->request->urlparams["resource"]) . "Controller";
         // $user_ID = $this->request->urlparams['id'];
         // echo $controllername."/".$user_ID;
-        if (class_exists($controllername)) { 
+        if (class_exists($controllername)) {
             $this->controller = new $controllername();
         } else {
             // either throw an error
             // or 
             // implement a default controller
         }
-      
+
         switch ($this->request->method) {
             case 'GET':
                 if ($controllername == "AppointmentsController")
-                    $this->processGetUserAppointmentsResponse();             
+                    $this->processGetUserAppointmentsResponse();
                 if ($controllername == "AuthController")
                     $this->processGetAuthResponse();
                 if ($controllername == "HospitalsController")
@@ -66,11 +65,13 @@ class API
                 break;
             case 'POST':
                 // for appointment booking
-                $this->processPostResponse();
+                if ($controllername == "AppointmentsController")
+                    $this->processPostResponse();
                 break;
             case 'PUT':
                 // for modifying appointments
-                $this->processPutResponse();
+                if ($controllername == "AppointmentsController")
+                    $this->processPutResponse();
                 break;
             case 'DELETE':
                 // to remove an appointment
@@ -79,11 +80,11 @@ class API
                 break;
             case 'OPTIONS':
                 break;
-
         }
     }
 
-    public function processGetHospitalResponse() {
+    public function processGetHospitalResponse()
+    {
         $this->verifyAuthorizationHeader();
         // $apikey = $this->request->header['X-API-Key'];
         // Determine the reponse properties
@@ -103,7 +104,6 @@ class API
         if (count($rawpayload) > 0) {
             $statuscode = 200;
             $statustext = "OK";
-
         } else {
             $statuscode = 404;
             $statustext = "Not Found";
@@ -127,7 +127,6 @@ class API
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
-
         }
 
         $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
@@ -135,35 +134,43 @@ class API
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
         $this->response = $responseBuilder->getResponse();
-        
+
         echo $this->response->payload;
     }
 
-    public function processGetUserAppointmentsResponse() {
+    public function processGetUserAppointmentsResponse()
+    {
         $this->verifyAuthorizationHeader();
+
         $api_key = $this->request->header['X-API-Key'];
         $user_ID = $this->request->urlparams['id'];
+        $appointment_ID = $this->request->urlparams['anotherid'];
 
         $data = [
             'api_key' => $api_key,
             'user_ID' => $user_ID,
         ];
-        // Determine the reponse properties
+
+          // Determine the reponse properties
         $header = array();
         $payload = array();
         $statuscode = 0;
         $statustext = "";
         $contenttype = "";
         $customtoken = "";
+
+
+        $rawpayload = $this->controller->getUserAppointments($data, $appointment_ID);
+
+
         // Get the data/resource
-        $rawpayload = $this->controller->getUserAppointments($data);
+
         // Check if data  was returned: the data here is the requested resource
         // If the data is found and can be returned
         // The HTTP status code of the response should be: 200
         if (count($rawpayload) > 0) {
             $statuscode = 200;
             $statustext = "OK";
-
         } else {
             $statuscode = 404;
             $statustext = "Not Found";
@@ -187,7 +194,6 @@ class API
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
-
         }
 
         $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
@@ -195,7 +201,7 @@ class API
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
         $this->response = $responseBuilder->getResponse();
-        
+
         echo $this->response->payload;
     }
 
@@ -243,13 +249,10 @@ class API
         if (!is_null($rawpayload)) {
             $statuscode = 200;
             $statustext = "OK";
-
-
         } else { // 0 rows in the databasse because the resource was not found
             $statuscode = 404;
             $statustext = "Not Found";
             $rawpayload = array('message' => "Possibly invalid enpoint.");
-
         }
 
         // How do we decide what is the response content-type?
@@ -289,12 +292,16 @@ class API
     /*
     
     */
-    public function processPutResponse() {
+    public function processPutResponse()
+    {
         $this->verifyAuthorizationHeader();
 
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
         $appointment_ID = $this->request->urlparams['id'];
+        echo 'this is put method in api index.php ' . $appointment_ID;
+        var_dump($data);
+
 
         $header = array();
         $payload = array();
@@ -309,11 +316,10 @@ class API
             $statuscode = 200;
             $statustext = "OK";
             $customtoken = 'Bearer ' . $this->jwt;
-
         } else { // 0 rows in the databasse because the resource was not found
             $statuscode = 404;
             $statustext = "Not Found";
-            
+
             $rawpayload = array('message' => "Possibly invalid enpoint.");
 
             $customtoken = 'Bearer ' . $this->jwt;
@@ -342,12 +348,12 @@ class API
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
         $this->response = $responseBuilder->getResponse(); // which returns a response objec
-        
-        echo $this->response->payload;
 
+        echo $this->response->payload;
     }
 
-    function verifyAuthorizationHeader() {
+    function verifyAuthorizationHeader()
+    {
         try {
             $Authorization = $this->request->header["Authorization"];
             // echo $jwt;
@@ -382,7 +388,6 @@ class API
         if (!empty($jwt_token)) {
             $statuscode = 200;
             $statustext = "OK";
-           
         } else {
             $statuscode = 401;
             $statustext = "Unauthorized";
@@ -401,18 +406,17 @@ class API
                 $contenttype = 'application/json';
         }
 
-        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 
-                'Custom-Token' => $customtoken];
+        $headerfields = [
+            'Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype,
+            'Custom-Token' => $customtoken
+        ];
 
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
         $this->response = $responseBuilder->getResponse();
     }
-
 } // API class
 
 $api = new API();
 
 $api->processRequest();
-
-?>
