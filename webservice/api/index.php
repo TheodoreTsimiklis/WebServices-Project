@@ -44,6 +44,7 @@ class API
         $requestBuilder = new RequestBuilder();
         $this->request = $requestBuilder->getRequest();
         $controllername = ucfirst($this->request->urlparams["resource"]) . "Controller";
+
         // $user_ID = $this->request->urlparams['id'];
         // echo $controllername."/".$user_ID;
         if (class_exists($controllername)) {
@@ -85,6 +86,7 @@ class API
 
     public function processGetHospitalResponse()
     {
+
         $this->verifyAuthorizationHeader();
         // $apikey = $this->request->header['X-API-Key'];
         // Determine the reponse properties
@@ -143,8 +145,8 @@ class API
         $this->verifyAuthorizationHeader();
 
         $api_key = $this->request->header['X-API-Key'];
-        $user_ID = $this->request->urlparams['id'];
-        $appointment_ID = $this->request->urlparams['anotherid'];
+        $user_ID = $this->request->urlparams['user_ID'];
+        $appointment_ID = $this->request->urlparams['id'];
 
         $data = [
             'api_key' => $api_key,

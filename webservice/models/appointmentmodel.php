@@ -124,35 +124,35 @@ class AppointmentModel
    }
 
 
-    function getSingleAppointment($data){
-        $query = "SELECT hospital_name FROM hospitals 
-                    WHERE appointment_ID = :appointment_ID";
+    // function getSingleAppointment($data){
+    //     $query = "SELECT hospital_name FROM hospitals 
+    //                 WHERE appointment_ID = :appointment_ID";
 
-        $statement = $this->conn->prepare($query);
+    //     $statement = $this->conn->prepare($query);
 
-        $statement->execute();
+    //     $statement->execute();
 
-        return $statement->fetchColumn();   // only return hospital's name, just a string
+    //     return $statement->fetchColumn();   // only return hospital's name, just a string
     
-    }
+    // }
 
 }
 
 
 
-$query = 'SELECT appointments.appointment_ID, appointments.client_ID, appointments.user_ID, appointments.hospital_ID, appointments.date_time,
-            hospitals.hospital_name
-                    FROM appointments
-                    INNER JOIN hospitals ON appointments.hospital_ID = hospitals.hospital_ID
-                    WHERE user_ID = :user_ID AND appointments.appointment_ID = :appointment_ID
-                    AND client_ID =
-                            (SELECT client_ID 
-                            FROM clients
-                            WHERE api_key = :api_key)';
+// $query = 'SELECT appointments.appointment_ID, appointments.client_ID, appointments.user_ID, appointments.hospital_ID, appointments.date_time,
+//             hospitals.hospital_name
+//                     FROM appointments
+//                     INNER JOIN hospitals ON appointments.hospital_ID = hospitals.hospital_ID
+//                     WHERE user_ID = :user_ID AND appointments.appointment_ID = :appointment_ID
+//                     AND client_ID =
+//                             (SELECT client_ID 
+//                             FROM clients
+//                             WHERE api_key = :api_key)';
 
-        $statement = $this->conn->prepare($query);
-        $statement->bindParam(':user_ID', $data['user_ID'], PDO::PARAM_INT);
-        $statement->bindParam(':api_key', $data['api_key'], PDO::PARAM_STR);
-        $statement->bindParam(':appointment_ID', $data['appointment_ID'], PDO::PARAM_INT);
+//         $statement = $this->conn->prepare($query);
+//         $statement->bindParam(':user_ID', $data['user_ID'], PDO::PARAM_INT);
+//         $statement->bindParam(':api_key', $data['api_key'], PDO::PARAM_STR);
+//         $statement->bindParam(':appointment_ID', $data['appointment_ID'], PDO::PARAM_INT);
 
 

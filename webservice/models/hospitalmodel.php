@@ -71,7 +71,6 @@ class HospitalModel
 
         $statement = $this->conn->prepare($query);
 
-        // $statement->bindParam(':apikey', $apikey, PDO::PARAM_STR);
 
         $statement->execute();
 

@@ -38,7 +38,7 @@ class Appointment extends Controller
                 $data = $this->getHospitalList();
 
                 $this->view('Appointment/index', $data); // keep showing this page
-                // echo $data;
+                // var_dump($data) ;
             }
         }
     }
@@ -68,7 +68,8 @@ class Appointment extends Controller
 
         $response = curl_exec($ch);
         // $data = json_decode($response, TRUE);
-        // var_dump($data);
+        // var_dump($response);
+        
         return $response;
 
         // $info = curl_getinfo($ch);
@@ -169,7 +170,7 @@ class Appointment extends Controller
         // if you have the jwt already
         if (isset($this->jwt)) {
             // get all appointments of a user
-            $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $_SESSION['user_id'];
+            $url = "http://localhost/WebServices-Project/webservice/api/appointments/?user_ID=" . $_SESSION['user_id'];
 
             $ch = curl_init();
             $data = array(
@@ -200,7 +201,7 @@ class Appointment extends Controller
 
         if (isset($this->jwt)) {
             // get all appointments of a user
-            $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $_SESSION['user_id']. '/' . $appointment_ID;
+            $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID . '?user_ID='. $_SESSION['user_id'];
 
             $ch = curl_init();
 

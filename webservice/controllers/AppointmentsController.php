@@ -41,9 +41,9 @@ class AppointmentsController {
         return $this->appointmentModel->updateAppointment($data, $appointment_ID);
     }
 
-    function getSingleAppointment($data){
-        return $this->appointmentModel->getSingleAppointment($data);
-    }
+    // function getSingleAppointment($data){
+    //     return $this->appointmentModel->getSingleAppointment($data);
+    // }
 
 
 
