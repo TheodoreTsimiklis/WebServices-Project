@@ -192,7 +192,7 @@ class Appointment extends Controller
         }
     }
 
-    public function get_An_appointment($appointment_ID)
+    public function getAppointment($appointment_ID)
     {
         if (!isset($this->jwt)) {
             // generate token first 
@@ -219,17 +219,11 @@ class Appointment extends Controller
             curl_setopt($ch, CURLOPT_URL, $url);
             // Return headers seperatly from the Response Body
             $response = curl_exec($ch);
-            echo $response;
             $this->view('Appointment/update_appointment', $response);
 
-            curl_close($ch); //关闭
+            curl_close($ch);
         }
-
-
     }
-
-
-
 
     public function update_appointment($appointment_ID)
     {
@@ -239,9 +233,6 @@ class Appointment extends Controller
         }
         // if you have the jwt already
         if (isset($this->jwt)) {
-            // get specific appointment
-            // $this->getUpdateAppointment($appointment_ID);
-
             // do PUT here
             if (isset($_POST['updateAppointment'])) {          // after u change the date
                 //The URL that we want to send a PUT request to.
@@ -273,7 +264,6 @@ class Appointment extends Controller
 
                 // curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 
-
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url); //定义请求地址
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); //定义请求类型，当然那个提交类型那一句就不需要了
@@ -287,9 +277,6 @@ class Appointment extends Controller
                 )); //定义header
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //定义是否直接输出返回流 
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); //定义提交的数据
-
-
-
 
                 //Execute the request.
                 $response = curl_exec($ch);
