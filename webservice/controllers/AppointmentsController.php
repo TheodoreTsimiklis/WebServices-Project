@@ -1,7 +1,10 @@
 <?php
-
 require(dirname(__DIR__)."/models/appointmentModel.php");
-
+require_once(dirname(__DIR__).'/vendor/autoload.php');
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\FirePHPHandler;
 class AppointmentsController {
 
     private $appointmentsModel; //model
@@ -30,7 +33,17 @@ class AppointmentsController {
             'hospital_ID' =>$hospital_ID,
             'email' => $email,
         ];
+        $logger = new Logger('appoinmentControllerLogger');
+        $logger->pushHandler(new StreamHandler(dirname(dirname(__FILE__)).'/logs/info.log', Level::Info));
+        $logger->pushHandler(new FirePHPHandler());
+        
         $result = $this->appointmentModel->addAppointment($data);
+            
+        if ($result)
+            $logger->info($donor_Name . "'s " . 'appointment booking successful');
+        else 
+            $logger->info($donor_Name . "'s " . 'appointment booking failed');
+
         return $result; // returns to index.php method processPostResponse
     }
     function getUserAppointments($data, $appointment_ID) {

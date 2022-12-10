@@ -27,6 +27,10 @@ class ComposerStaticInitb40956f85a900c6fbcb87adf1db3bf6b
         array (
             'OpenApi\\' => 8,
         ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'F' => 
         array (
             'Firebase\\JWT\\' => 13,
@@ -62,6 +66,10 @@ class ComposerStaticInitb40956f85a900c6fbcb87adf1db3bf6b
         'OpenApi\\' => 
         array (
             0 => __DIR__ . '/..' . '/zircote/swagger-php/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Firebase\\JWT\\' => 
         array (

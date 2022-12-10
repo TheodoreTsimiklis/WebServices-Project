@@ -198,13 +198,12 @@ class Appointment extends Controller
             // generate token first 
             $this->generateToken();
         }
-
         if (isset($this->jwt)) {
-            // get all appointments of a user
+
+            
             $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID . '?user_ID='. $_SESSION['user_id'];
-
             $ch = curl_init();
-
+            
             $data = array(
                 'Accept: application/json',
                 'Content-Type: application/json',
@@ -222,6 +221,10 @@ class Appointment extends Controller
             $this->view('Appointment/update_appointment', $response);
 
             curl_close($ch);
+
+            if (isset($_POST['updateAppointment'])) {   // if update button is clicked then do PUT request
+                $this->update_appointment($appointment_ID);
+            }
         }
     }
 
@@ -282,9 +285,9 @@ class Appointment extends Controller
                 $response = curl_exec($ch);
 
                 echo $response;
-                $this->view('Appointment/update_appointment', $response);
+                $this->view('Appointment/appointment_status', $response);
             } else {
-                $this->view('Appointment/update_appointment');
+                $this->view('Appointment/appointment_status');
             }
 
             curl_close($ch); //关闭

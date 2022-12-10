@@ -1,10 +1,16 @@
 <?php
 require(dirname(__DIR__) . "/core/http/requestbuilder.php");
 require(dirname(__DIR__) . "/core/http/responsebuilder.php");
+require_once(dirname(__DIR__).'/vendor/autoload.php');
 require_once(dirname(__DIR__) . "/core/http/request.php");
 require_once(dirname(__DIR__) . "/core/http/response.php");
 require_once(dirname(__DIR__) . "/core/auth/auth.php");
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
+
+use Monolog\Level;
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\FirePHPHandler;
 
 spl_autoload_register('auto_loader');
 
@@ -22,24 +28,16 @@ function auto_loader($class)
  */
 class API
 {
-
-    // Instead of building the request here, we encapsulate the request code in separate classes
     private $request;
-
     public $response;
-
     private $controller;
-
     private $auth;
-
     private $jwt;
 
-    function __construct()
-    {
+    function __construct() {
     }
 
-    function processRequest()
-    {
+    function processRequest() {
         $this->auth = new AuthToken();
         $requestBuilder = new RequestBuilder();
         $this->request = $requestBuilder->getRequest();
@@ -360,7 +358,6 @@ class API
             $Authorization = $this->request->header["Authorization"];
             // echo $jwt;
             $this->jwt = explode(" ", $Authorization)[1];
-
             $apikey = $this->request->header["X-API-Key"];
             $decodedpayload = $this->auth->verifyToken($this->jwt, $apikey);
         } catch (Exception $e) {
@@ -373,6 +370,7 @@ class API
      */
     function processGetAuthResponse()
     {
+        
         $apikey = $this->request->header['X-API-Key'];
         // Determine the reponse properties
         $header = array();
@@ -387,12 +385,18 @@ class API
         // If the data is found and can be returned
         // The HTTP status code of the response should be: 200
 
+        $logger = new Logger('JWTLogger');
+        $logger->pushHandler(new StreamHandler(dirname(dirname(__FILE__)).'/logs/info.log', Level::Info));
+        $logger->pushHandler(new FirePHPHandler());
+    
         if (!empty($jwt_token)) {
             $statuscode = 200;
             $statustext = "OK";
+            $logger->info("Token is not empty. " . "JWT is: " . $jwt_token);
         } else {
             $statuscode = 401;
             $statustext = "Unauthorized";
+            $logger->info("Token is empty");
         }
         // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) {

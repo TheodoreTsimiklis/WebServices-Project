@@ -9,6 +9,7 @@
                                     <label class="form-label fs-3 fw-bold">Hospital Information:</label>
                                      <p class="fs-4">
                                         <?php 
+                                        // var_dump($data);
                                         $arr = json_decode($data, true);
                                         echo $arr[0]['hospital_name'];                                        
                                         ?>
@@ -17,14 +18,15 @@
                                         <?php 
                                         $arr = json_decode($data, true);                                     
                                         echo $arr[0]['hospital_street']. ', '. $arr[0]['city'] . ', ' . $arr[0]['province'] . ' ' . $arr[0]['postal_code'];
-                                        
                                         ?>
                                     </p>
                                     <label class="form-label fs-3 fw-bold" style="margin-top: 11px;">Date and Time:</label>
                                     <input class="border-1 form-control form-control-lg" type="datetime-local" name="datetime" id="datetime">
                                     
                                     <div class="d-flex justify-content-center" style="margin-top: -42px;">
-                                        <button class="btn btn-danger fs-3" type="submit"  name="updateAppointment" style="padding-top: 6px;margin-top: 83px;">Update Appointment</button>
+                                        <a href="<?php echo URLROOT; ?>/Appointment/updateAppointment/<?php echo $arr[0]['appointment_ID']?>"
+                                            <button class="btn btn-danger fs-3" type="submit" name="updateAppointment" style="padding-top: 6px;margin-top: 83px;">Update Appointment</button>
+                                        </a>
                                     </div>
                                 </form>
                             </div>

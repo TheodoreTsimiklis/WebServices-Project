@@ -15,40 +15,36 @@
                                                 <th>Hospital&nbsp;</th>
                                                 <th>Address</th>
                                                 <th>DateTime</th>
-                                                <th class="text-center">Action&nbsp;</th>
+                                                <th></th>
+                                                <th></th>
+                                                <!-- <th class="text-center"></th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             
                                             <?php 
                                             $arr = json_decode($data, true);
-                                            
                                             foreach ($arr as $item) {
-
                                                 echo '<tr>';
                                                 echo '<td>'.$item['appointment_ID'].'</td>';
-
                                                 echo '<td>'.$item['hospital_name'].'</td>';
-
                                                 echo '<td>'.$item['hospital_street']. ', '. $item['city'] . ', ' . $item['province'] . ' ' . $item['postal_code'] .  '</td>';
                                                 echo '<td>'.$item['date_time'].'</td>';
                                                 echo '<td>
                                                         <a href="' .URLROOT . '/Appointment/getAppointment/'.$item['appointment_ID'].'">
                                                             <button class="btn btn-warning" type="submit" name="updateSubmit" style="margin-right: 8px;">Update</button>
-                                                        </a>';
-                            
-                                                echo    '<a style="text-decoration: none" href="' .URLROOT . '/Appointment/deleteAppointment/'.$item['appointment_ID'].'">
+                                                        </a>
+                                                     </td>';
+                                                echo    '<td>
+                                                        <a style="text-decoration: none" href="' .URLROOT . '/Appointment/deleteAppointment/'.$item['appointment_ID'].'">
                                                             <button class="btn btn-danger" type="submit" name="deleteSubmit" style="margin-right: 8px;">Cancel</button>
                                                         </a>
                                                     </td>';
                                                 echo '</tr>';
-                                                   
-                                         
+                                                
                                             }
                                             // }
-                                            ?>
-                                               
-                                           
+                                            ?>                                           
                                         </tbody>
                                     </table>
                                 </div>

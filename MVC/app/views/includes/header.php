@@ -22,9 +22,7 @@
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item"><a class="nav-link active" href="<?php echo URLROOT; ?>/Home/index"><i class="bi bi-house"></i> HOME</a></li>
                             <li class="nav-item"><a class="nav-link" href="<?php echo URLROOT; ?>/About/index"><i class="bi bi-question-square"></i> ABOUT</a></li>
-                            <!--<li class="nav-item"><a class="nav-link" href="<?php //echo URLROOT; ?>/Login/index">LOGIN</a></li>
-                            <li class="nav-item"><a class="nav-link" href="<?php //echo URLROOT; ?>/Login/signup">SIGNUP</a></li>-->
-                            <!--MODIFY FOR MAKING HEADER CHANGED WHEN LOGGED IN (UNCOMMENT WHEN CODED)-->
+                           
                             <?php
                             if (isLoggedIn()) {
                                 echo '<li class="nav-item"><a class="nav-link" href="' . URLROOT . '/Dashboard/index"><i class="bi bi-person"></i> DASHBOARD</a></li>'; 
