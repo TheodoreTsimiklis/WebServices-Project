@@ -189,6 +189,8 @@ class Appointment extends Controller
             // Return headers seperatly from the Response Body
             $response = curl_exec($ch);
             $this->view('Appointment/view_appointments', $response);
+              
+
         }
     }
 
@@ -199,8 +201,6 @@ class Appointment extends Controller
             $this->generateToken();
         }
         if (isset($this->jwt)) {
-
-            
             $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID . '?user_ID='. $_SESSION['user_id'];
             $ch = curl_init();
             
@@ -220,10 +220,12 @@ class Appointment extends Controller
             $response = curl_exec($ch);
             $this->view('Appointment/update_appointment', $response);
 
+
             curl_close($ch);
 
             if (isset($_POST['updateAppointment'])) {   // if update button is clicked then do PUT request
                 $this->update_appointment($appointment_ID);
+
             }
         }
     }
@@ -231,13 +233,12 @@ class Appointment extends Controller
     public function update_appointment($appointment_ID)
     {
         if (!isset($this->jwt)) {
-            // generate token first 
             $this->generateToken();
-        }
-        // if you have the jwt already
+        }  
         if (isset($this->jwt)) {
             // do PUT here
-            if (isset($_POST['updateAppointment'])) {          // after u change the date
+                 // after u change the date
+
                 //The URL that we want to send a PUT request to.
                 $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID;
 
@@ -273,7 +274,7 @@ class Appointment extends Controller
                 curl_setopt($ch, CURLOPT_HEADER, 0); //定义是否显示状态头 1：显示 ； 0：不显示 
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                     "Content-type: application/json",
-                    'Accept: application/json', 'Expect:',
+                    'Accept: application/json',
                     // 'Content-Length: ' . strlen($fields), 
                     'Authorization: ' . $this->jwt,
                     'X-API-Key: abcd123'
@@ -284,13 +285,32 @@ class Appointment extends Controller
                 //Execute the request.
                 $response = curl_exec($ch);
 
-                echo $response;
                 $this->view('Appointment/appointment_status', $response);
-            } else {
-                $this->view('Appointment/appointment_status');
-            }
 
             curl_close($ch); //关闭
+        }
+    }
+
+    public function deleteAppointment($appointment_ID) {
+        if (!isset($this->jwt)) {
+            $this->generateToken();
+        }
+        if (isset($this->jwt)) {
+            $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    "Content-type: application/json",
+                    'Accept: application/json',
+                    'Authorization: ' . $this->jwt,
+                    'X-API-Key: abcd123'
+            ));
+            
+            $response = curl_exec($ch);
+            // header('Location: /WebServices-Project/MVC/Appointment/appointment_status');
+            $this->view('Appointment/appointment_status', $response);
         }
     }
 }

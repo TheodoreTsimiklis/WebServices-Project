@@ -6,10 +6,18 @@
                         <div class="container">
                             <div class="d-flex justify-content-center" style="border-color: rgb(194,218,242);">
                                 <p class="fs-4 border rounded-0 border-2 border-secondary">
-                                    <?php echo $data?>
+                                <?php   
+                                    var_dump($data);
+                                    // $arr = json_decode($data, true);
+                                    
+                                ?>
                                 </p>
                             </div>
-                            <div class="fs-5 d-flex justify-content-center" style="border-color: rgb(194,218,242);"><a href="<?php echo URLROOT; ?>/appointment/view_appointments">View My Appointments</a></div>
+                            <div class="fs-5 d-flex justify-content-center" style="border-color: rgb(194,218,242);">
+                                <a href="<?php echo URLROOT; ?>/appointment/view_appointments">
+                                View My Appointments
+                                </a>
+                            </div>
                         </div>
                     </section>
                 </div>

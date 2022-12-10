@@ -17,7 +17,6 @@ class AuthController {
             'nbf' => 1668004579,
             'exp' => 1699659829
         ];
-
         $auth = new AuthToken();
         $jwt = $auth->generateToken($payload, $key);
         return $jwt; 

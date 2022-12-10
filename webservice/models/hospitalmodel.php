@@ -23,11 +23,8 @@ class HospitalModel
     function hospital_list($apikey)
     {
         $query = 'SELECT * FROM hospitals';
-
         $statement = $this->conn->prepare($query);
-
         $statement->bindParam(':apikey', $apikey, PDO::PARAM_STR);
-
         $statement->execute();
 
         //FETCH_CLASS returns an array of objects of type videoconversions: result->id
@@ -44,7 +41,6 @@ class HospitalModel
                     values (:client_ID, :date_Time, :donor_Name, :user_ID)";
 
         $statement = $this->conn->prepare($query);
-
         $statement->bindParam(':client_ID', $data["client_ID"], PDO::PARAM_INT);
         $statement->bindParam(':date_Time', $data["date_Time"], PDO::PARAM_STR);
         $statement->bindParam(':donor_Name', $data["donor_Name"], PDO::PARAM_STR);
@@ -59,21 +55,15 @@ class HospitalModel
                 WHERE api_Key = :apikey';
         
         $statement = $this->conn->prepare($query);
-
         $statement->bindParam(':apikey', $apikey, PDO::PARAM_STR);
-
         $statement->execute();
         return $statement->fetch(PDO::FETCH_NUM); // fetch number 
     }
 
     function getHospitalsList(){
         $query= 'SELECT * FROM hospitals';
-
         $statement = $this->conn->prepare($query);
-
-
         $statement->execute();
-
         return $statement->fetchAll(PDO::FETCH_CLASS);
     }
 }

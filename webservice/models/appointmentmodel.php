@@ -136,6 +136,13 @@ class AppointmentModel
     
     // }
 
+    function deleteAppointment($appointment_ID) {
+        $query = 'DELETE FROM appointments 
+            WHERE appointment_ID = :appointment_ID';
+        $statement = $this->conn->prepare($query);
+        $statement->bindParam(':appointment_ID', $appointment_ID, PDO::PARAM_STR);
+        return $statement->execute();
+    }
 }
 
 

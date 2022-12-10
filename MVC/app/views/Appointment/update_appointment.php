@@ -24,9 +24,7 @@
                                     <input class="border-1 form-control form-control-lg" type="datetime-local" name="datetime" id="datetime">
                                     
                                     <div class="d-flex justify-content-center" style="margin-top: -42px;">
-                                        <a href="<?php echo URLROOT; ?>/Appointment/updateAppointment/<?php echo $arr[0]['appointment_ID']?>"
-                                            <button class="btn btn-danger fs-3" type="submit" name="updateAppointment" style="padding-top: 6px;margin-top: 83px;">Update Appointment</button>
-                                        </a>
+                                        <button class="btn btn-danger fs-3" type="submit" name="updateAppointment" style="padding-top: 6px;margin-top: 83px;">Update Appointment</button>    
                                     </div>
                                 </form>
                             </div>

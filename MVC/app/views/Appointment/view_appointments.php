@@ -35,11 +35,13 @@
                                                             <button class="btn btn-warning" type="submit" name="updateSubmit" style="margin-right: 8px;">Update</button>
                                                         </a>
                                                      </td>';
-                                                echo    '<td>
-                                                        <a style="text-decoration: none" href="' .URLROOT . '/Appointment/deleteAppointment/'.$item['appointment_ID'].'">
+                                               
+                                                echo '<td>
+                                                        <a href="' .URLROOT . '/Appointment/deleteAppointment/'.$item['appointment_ID'].'">
                                                             <button class="btn btn-danger" type="submit" name="deleteSubmit" style="margin-right: 8px;">Cancel</button>
                                                         </a>
                                                     </td>';
+                                               
                                                 echo '</tr>';
                                                 
                                             }

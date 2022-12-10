@@ -42,9 +42,7 @@ class API
         $requestBuilder = new RequestBuilder();
         $this->request = $requestBuilder->getRequest();
         $controllername = ucfirst($this->request->urlparams["resource"]) . "Controller";
-
-        // $user_ID = $this->request->urlparams['id'];
-        // echo $controllername."/".$user_ID;
+       
         if (class_exists($controllername)) {
             $this->controller = new $controllername();
         } else {
@@ -52,7 +50,6 @@ class API
             // or 
             // implement a default controller
         }
-
         switch ($this->request->method) {
             case 'GET':
                 if ($controllername == "AppointmentsController")
@@ -73,7 +70,9 @@ class API
                     $this->processPutResponse();
                 break;
             case 'DELETE':
-                // to remove an appointment
+                if ($controllername == "AppointmentsController")
+                    echo "HERE";
+                    $this->processDeleteResponse();
                 break;
             case 'HEAD':
                 break;
@@ -158,8 +157,6 @@ class API
         $statustext = "";
         $contenttype = "";
         $customtoken = "";
-
-
         $rawpayload = $this->controller->getUserAppointments($data, $appointment_ID);
 
 
@@ -352,6 +349,54 @@ class API
         echo $this->response->payload;
     }
 
+    public function processDeleteResponse() {
+        $this->verifyAuthorizationHeader();
+        $appointment_ID = $this->request->urlparams['id'];
+        
+        $header = array();
+        $payload = array();
+        $statuscode = 0;
+        $statustext = "";
+        $contenttype = "";
+        $customtoken = "";
+
+        $appointmentStatus = $this->controller->deleteAppointment($appointment_ID);
+        $rawpayload = array("appointmentStatus" => $appointmentStatus);
+
+        if (!is_null($rawpayload)) {
+            $statuscode = 200;
+            $statustext = "OK";
+            $customtoken = 'Bearer ' . $this->jwt;
+        } else { // 0 rows in the databasse because the resource was not found
+            $statuscode = 404;
+            $statustext = "Not Found";
+            $rawpayload = array('message' => "Possibly invalid enpoint.");
+            $customtoken = 'Bearer ' . $this->jwt;
+        }
+        // How do we decide what is the response content-type?
+        switch ($this->request->header['Accept']) { // Making sure we know what the client wants -> we are generalizing/assuming that we know that we know what the client wants back(Accept)
+            case 'application/json':
+                // Serialize the array of objects into a JSON array
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+                break;
+
+            case 'application/xml':
+                break;
+
+            default:
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+        }
+        //set up the headerfields that will be sent to the response builder
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
+        $responseBuilder = new Responsebuilder($headerfields, $payload);
+        $this->response = $responseBuilder->getResponse(); // which returns a response objec
+        echo $this->response->payload;
+    }
+
     function verifyAuthorizationHeader()
     {
         try {
@@ -411,12 +456,10 @@ class API
                 $customtoken = "Bearer " . $jwt_token;
                 $contenttype = 'application/json';
         }
-
         $headerfields = [
             'Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype,
             'Custom-Token' => $customtoken
         ];
-
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
         $this->response = $responseBuilder->getResponse();

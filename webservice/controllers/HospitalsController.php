@@ -1,7 +1,5 @@
 <?php
-
 require(dirname(__DIR__)."/models/hospitalModel.php");
-
 class HospitalsController {
 
     private $hospitalsModel; //model

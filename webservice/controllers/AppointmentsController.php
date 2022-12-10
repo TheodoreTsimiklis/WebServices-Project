@@ -54,6 +54,9 @@ class AppointmentsController {
         return $this->appointmentModel->updateAppointment($data, $appointment_ID);
     }
 
+    function deleteAppointment($appointment_ID) {
+        return $this->appointmentModel->deleteAppointment($appointment_ID);
+    }
     // function getSingleAppointment($data){
     //     return $this->appointmentModel->getSingleAppointment($data);
     // }
