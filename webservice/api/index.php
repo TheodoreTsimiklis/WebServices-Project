@@ -101,6 +101,29 @@ class API
         }
     }
 
+    /**
+     * @OA\Get  (
+     *     tags={"Blood Donation Appointment"},
+     *     path="/webservice/api/appointments/",
+     *     summary="Donor's appointment",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               @OA\Property(description="client apikey", property="apikey", type="string"),
+     *               @OA\Property(description="user id", property="userID", type="integer"),
+     *               @OA\Property(description="donor name", property="donorname", type="string"),
+     *               @OA\Property(description="date and time", property="datetime", type="string"),
+     *               required={"apikey", "userID", "donorname", "datetime"}
+     *             ),
+     *             example={"apikey": "abc123", "userID": 1, "donorname": "Chilka Castro", "datetime": "2022-09-23 11:40"}
+     *         )
+     *     ),
+     *     @OA\Response(response="401", description="Booking Appointment Failed"),
+     *     @OA\Response(response="200", description="Booking Appointment Successful"),
+     * )
+     */
+
     public function processGetHospitalResponse()
     {
 
@@ -156,6 +179,29 @@ class API
 
         echo $this->response->payload;
     }
+
+    /**
+     * @OA\Get  (
+     *     tags={"Blood Donation Appointment"},
+     *     path="/webservice/api/appointments/",
+     *     summary="Donor's appointment",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               @OA\Property(description="client apikey", property="apikey", type="string"),
+     *               @OA\Property(description="user id", property="userID", type="integer"),
+     *               @OA\Property(description="donor name", property="donorname", type="string"),
+     *               @OA\Property(description="date and time", property="datetime", type="string"),
+     *               required={"apikey", "userID", "donorname", "datetime"}
+     *             ),
+     *             example={"apikey": "abc123", "userID": 1, "donorname": "Chilka Castro", "datetime": "2022-09-23 11:40"}
+     *         )
+     *     ),
+     *     @OA\Response(response="401", description="Booking Appointment Failed"),
+     *     @OA\Response(response="200", description="Booking Appointment Successful"),
+     * )
+     */
 
     public function processGetCDNResponse()
     {
@@ -219,6 +265,29 @@ class API
 
         echo $this->response->payload;
     }
+
+    /**
+     * @OA\Get (
+     *     tags={"Blood Donation Appointment"},
+     *     path="/webservice/api/appointments/",
+     *     summary="Donor's appointment",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               @OA\Property(description="client apikey", property="apikey", type="string"),
+     *               @OA\Property(description="user id", property="userID", type="integer"),
+     *               @OA\Property(description="donor name", property="donorname", type="string"),
+     *               @OA\Property(description="date and time", property="datetime", type="string"),
+     *               required={"apikey", "userID", "donorname", "datetime"}
+     *             ),
+     *             example={"apikey": "abc123", "userID": 1, "donorname": "Chilka Castro", "datetime": "2022-09-23 11:40"}
+     *         )
+     *     ),
+     *     @OA\Response(response="401", description="Booking Appointment Failed"),
+     *     @OA\Response(response="200", description="Booking Appointment Successful"),
+     * )
+     */
 
     public function processGetUserAppointmentsResponse()
     {
@@ -368,9 +437,29 @@ class API
         }
     }
 
-    /*
-
+    /**
+     * @OA\Post  (
+     *     tags={"Blood Donation Appointment"},
+     *     path="/webservice/api/appointments/",
+     *     summary="Donor's appointment",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               @OA\Property(description="client apikey", property="apikey", type="string"),
+     *               @OA\Property(description="user id", property="userID", type="integer"),
+     *               @OA\Property(description="donor name", property="donorname", type="string"),
+     *               @OA\Property(description="date and time", property="datetime", type="string"),
+     *               required={"apikey", "userID", "donorname", "datetime"}
+     *             ),
+     *             example={"apikey": "abc123", "userID": 1, "donorname": "Chilka Castro", "datetime": "2022-09-23 11:40"}
+     *         )
+     *     ),
+     *     @OA\Response(response="401", description="Booking Appointment Failed"),
+     *     @OA\Response(response="200", description="Booking Appointment Successful"),
+     * )
      */
+
     public function processPutResponse()
     {
         $this->verifyAuthorizationHeader();
@@ -429,6 +518,29 @@ class API
 
         echo $this->response->payload;
     }
+
+    /**
+     * @OA\Get  (
+     *     tags={"Blood Donation Appointment"},
+     *     path="/webservice/api/appointments/",
+     *     summary="Donor's appointment",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               @OA\Property(description="client apikey", property="apikey", type="string"),
+     *               @OA\Property(description="user id", property="userID", type="integer"),
+     *               @OA\Property(description="donor name", property="donorname", type="string"),
+     *               @OA\Property(description="date and time", property="datetime", type="string"),
+     *               required={"apikey", "userID", "donorname", "datetime"}
+     *             ),
+     *             example={"apikey": "abc123", "userID": 1, "donorname": "Chilka Castro", "datetime": "2022-09-23 11:40"}
+     *         )
+     *     ),
+     *     @OA\Response(response="401", description="Booking Appointment Failed"),
+     *     @OA\Response(response="200", description="Booking Appointment Successful"),
+     * )
+     */
 
     public function processDeleteResponse()
     {
@@ -492,9 +604,29 @@ class API
         }
     }
 
-    /*
-    Process the Authentication
+    /**
+     * @OA\Get (
+     *     tags={"Blood Donation Appointment"},
+     *     path="/webservice/api/appointments/",
+     *     summary="Donor's appointment",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *               @OA\Property(description="client apikey", property="apikey", type="string"),
+     *               @OA\Property(description="user id", property="userID", type="integer"),
+     *               @OA\Property(description="donor name", property="donorname", type="string"),
+     *               @OA\Property(description="date and time", property="datetime", type="string"),
+     *               required={"apikey", "userID", "donorname", "datetime"}
+     *             ),
+     *             example={"apikey": "abc123", "userID": 1, "donorname": "Chilka Castro", "datetime": "2022-09-23 11:40"}
+     *         )
+     *     ),
+     *     @OA\Response(response="401", description="Booking Appointment Failed"),
+     *     @OA\Response(response="200", description="Booking Appointment Successful"),
+     * )
      */
+
     public function processGetAuthResponse()
     {
 
