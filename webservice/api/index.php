@@ -1,23 +1,25 @@
 <?php
-require(dirname(__DIR__) . "/core/http/requestbuilder.php");
-require(dirname(__DIR__) . "/core/http/responsebuilder.php");
-require_once(dirname(__DIR__).'/vendor/autoload.php');
-require_once(dirname(__DIR__) . "/core/http/request.php");
-require_once(dirname(__DIR__) . "/core/http/response.php");
-require_once(dirname(__DIR__) . "/core/auth/auth.php");
-require_once(dirname(__DIR__) . "/vendor/autoload.php");
+require dirname(__DIR__) . "/core/http/requestbuilder.php";
+require dirname(__DIR__) . "/core/http/responsebuilder.php";
+require_once dirname(__DIR__) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . "/core/http/request.php";
+require_once dirname(__DIR__) . "/core/http/response.php";
+require_once dirname(__DIR__) . "/core/auth/auth.php";
+require_once dirname(__DIR__) . "/vendor/autoload.php";
 
+use Monolog\Handler\FirePHPHandler;
+use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\FirePHPHandler;
 
 spl_autoload_register('auto_loader');
 
 function auto_loader($class)
 {
-    if (file_exists(dirname(__DIR__) . "/controllers/" . $class . ".php"))
-        require(dirname(__DIR__) . "/controllers/" . $class . ".php");
+    if (file_exists(dirname(__DIR__) . "/controllers/" . $class . ".php")) {
+        require dirname(__DIR__) . "/controllers/" . $class . ".php";
+    }
+
 }
 
 /**
@@ -34,45 +36,63 @@ class API
     private $auth;
     private $jwt;
 
-    function __construct() {
+    public function __construct()
+    {
     }
 
-    function processRequest() {
+    public function processRequest()
+    {
         $this->auth = new AuthToken();
         $requestBuilder = new RequestBuilder();
         $this->request = $requestBuilder->getRequest();
         $controllername = ucfirst($this->request->urlparams["resource"]) . "Controller";
-       
+
         if (class_exists($controllername)) {
             $this->controller = new $controllername();
         } else {
             // either throw an error
-            // or 
+            // or
             // implement a default controller
         }
         switch ($this->request->method) {
             case 'GET':
-                if ($controllername == "AppointmentsController")
+                if ($controllername == "AppointmentsController") {
                     $this->processGetUserAppointmentsResponse();
-                if ($controllername == "AuthController")
+                }
+
+                if ($controllername == "AuthController") {
                     $this->processGetAuthResponse();
-                if ($controllername == "HospitalsController")
+                }
+
+                if ($controllername == "HospitalsController") {
                     $this->processGetHospitalResponse();
+                }
+
+                if ($controllername == "CdnController") {
+                    $this->processGetCDNResponse();
+                }
+
                 break;
             case 'POST':
                 // for appointment booking
-                if ($controllername == "AppointmentsController")
+                if ($controllername == "AppointmentsController") {
                     $this->processPostResponse();
+                }
+
                 break;
             case 'PUT':
                 // for modifying appointments
-                if ($controllername == "AppointmentsController")
+                if ($controllername == "AppointmentsController") {
                     $this->processPutResponse();
+                }
+
                 break;
             case 'DELETE':
-                if ($controllername == "AppointmentsController")
+                if ($controllername == "AppointmentsController") {
                     echo "HERE";
-                    $this->processDeleteResponse();
+                }
+
+                $this->processDeleteResponse();
                 break;
             case 'HEAD':
                 break;
@@ -137,6 +157,70 @@ class API
         echo $this->response->payload;
     }
 
+    public function processGetCDNResponse()
+    {
+
+        echo "come here ";
+        $this->verifyAuthorizationHeader();
+
+        // Determine the reponse properties
+        $header = array();
+        $payload = array();
+        $statuscode = 0;
+        $statustext = "";
+        $contenttype = "";
+        $customtoken = "";
+
+        $rawpayload = $this->controller->getFileFromCDN();
+
+        
+        // $fileURL = $this->controller->getFileFromCDN();
+        // echo "returned result" . $fileURL;
+
+        // $rawpayload = array("fileURL" => $fileURL);
+
+        // Get the data/resource
+
+        // Check if data  was returned: the data here is the requested resource
+        // If the data is found and can be returned
+        // The HTTP status code of the response should be: 200
+        if (count($rawpayload) > 0) {
+            $statuscode = 200;
+            $statustext = "OK";
+        } else {
+            $statuscode = 404;
+            $statustext = "Not Found";
+
+            $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
+        }
+
+        // How do we decide what is the response content-type?
+        switch ($this->request->header['Accept']) {
+
+            case 'application/json':
+                // Serialize the array of objects into a JSON array
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+
+                break;
+            case 'application/xml':
+                break;
+            default:
+                $payload = json_encode($rawpayload);
+                $contenttype = 'application/json';
+                $customtoken = 'Bearer ' . $this->jwt;
+        }
+
+        $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
+
+        $responseBuilder = new Responsebuilder($headerfields, $payload);
+
+        $this->response = $responseBuilder->getResponse();
+
+        echo $this->response->payload;
+    }
+
     public function processGetUserAppointmentsResponse()
     {
         $this->verifyAuthorizationHeader();
@@ -150,7 +234,7 @@ class API
             'user_ID' => $user_ID,
         ];
 
-          // Determine the reponse properties
+        // Determine the reponse properties
         $header = array();
         $payload = array();
         $statuscode = 0;
@@ -158,7 +242,6 @@ class API
         $contenttype = "";
         $customtoken = "";
         $rawpayload = $this->controller->getUserAppointments($data, $appointment_ID);
-
 
         // Get the data/resource
 
@@ -224,7 +307,7 @@ class API
      *     @OA\Response(response="200", description="Booking Appointment Successful"),
      * )
      */
-    function processPostResponse()
+    public function processPostResponse()
     {
 
         $this->verifyAuthorizationHeader();
@@ -287,8 +370,8 @@ class API
     }
 
     /*
-    
-    */
+
+     */
     public function processPutResponse()
     {
         $this->verifyAuthorizationHeader();
@@ -298,7 +381,6 @@ class API
         $appointment_ID = $this->request->urlparams['id'];
         echo 'this is put method in api index.php ' . $appointment_ID;
         var_dump($data);
-
 
         $header = array();
         $payload = array();
@@ -349,10 +431,11 @@ class API
         echo $this->response->payload;
     }
 
-    public function processDeleteResponse() {
+    public function processDeleteResponse()
+    {
         $this->verifyAuthorizationHeader();
         $appointment_ID = $this->request->urlparams['id'];
-        
+
         $header = array();
         $payload = array();
         $statuscode = 0;
@@ -397,7 +480,7 @@ class API
         echo $this->response->payload;
     }
 
-    function verifyAuthorizationHeader()
+    public function verifyAuthorizationHeader()
     {
         try {
             $Authorization = $this->request->header["Authorization"];
@@ -411,11 +494,11 @@ class API
     }
 
     /*
-       Process the Authentication 
+    Process the Authentication
      */
-    function processGetAuthResponse()
+    public function processGetAuthResponse()
     {
-        
+
         $apikey = $this->request->header['X-API-Key'];
         // Determine the reponse properties
         $header = array();
@@ -424,16 +507,16 @@ class API
         $statustext = "";
         $contenttype = "";
         $customtoken = "";
-        // Generate a JWT token 
+        // Generate a JWT token
         $jwt_token = $this->controller->processToken($apikey);
         // Check if data  was returned: the data here is the requested resource
         // If the data is found and can be returned
         // The HTTP status code of the response should be: 200
 
         $logger = new Logger('JWTLogger');
-        $logger->pushHandler(new StreamHandler(dirname(dirname(__FILE__)).'/logs/info.log', Level::Info));
+        $logger->pushHandler(new StreamHandler(dirname(dirname(__FILE__)) . '/logs/info.log', Level::Info));
         $logger->pushHandler(new FirePHPHandler());
-    
+
         if (!empty($jwt_token)) {
             $statuscode = 200;
             $statustext = "OK";
@@ -458,7 +541,7 @@ class API
         }
         $headerfields = [
             'Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype,
-            'Custom-Token' => $customtoken
+            'Custom-Token' => $customtoken,
         ];
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 

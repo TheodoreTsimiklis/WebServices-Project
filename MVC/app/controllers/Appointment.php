@@ -4,7 +4,7 @@ class Appointment extends Controller
     private $jwt;
 
     /*
-     Default constructor for the About
+    Default constructor for the About
      */
     public function __construct()
     {
@@ -15,46 +15,53 @@ class Appointment extends Controller
     }
 
     /*
-        Displays About page (who we are information)
-    */
+    Displays About page (who we are information)
+     */
     public function index()
     {
-        if (!isset($this->jwt)) { //  avoids regenerating jwt again 
-            // generate token first 
+        if (!isset($this->jwt)) { //  avoids regenerating jwt again
+            // generate token first
             $this->generateToken();
         }
+
+        // $data = array();
+
         // if you have the jwt already
         if (isset($this->jwt)) {
             // echo $this->jwt;
+
+            // $data for all the hospital
+            // get hospitals list and put it in an array and then send it on the view
+            $data = $this->getHospitalList();
+            $this->view('Appointment/index', $data); // keep showing this page
+            // var_dump($data) ;
+
             // go to the view page and send the list of hospitals
-
-            if (isset($_POST['submit'])) {  // POST : clicked Book an appointment button
+            if (isset($_POST['submit'])) { // POST : clicked Book an appointment button
                 // echo "goes here";
-                $data = $this->createAppointment();
+                $url = $this->createAppointment();
+                $data['fileURL'] = $url;
                 $this->view('Appointment/appointment_status', $data);
-            } else {
-                // $data for all the hospital
-                // get hospitals list and put it in an array and then send it on the view
-                $data = $this->getHospitalList();
+            }
 
-                $this->view('Appointment/index', $data); // keep showing this page
-                // var_dump($data) ;
+
+            if (isset($_POST['getCDN'])) {
+                $url = $this->downloadCDNFile();
+                echo $url;
+                $this->view('Appointment/index', $url);
             }
         }
     }
 
-    /*
-        Retrieve all the hospitals in the web service 
-     */
-    public function getHospitalList()
+    public function downloadCDNFile()
     {
-        $url = "http://localhost/WebServices-Project/webservice/api/hospitals/";
+        $url = "http://localhost/WebServices-Project/webservice/api/cdn/";
         $ch = curl_init();
         $data = array(
             'Accept: application/json',
             'Content-Type: application/json',
             'Authorization: ' . $this->jwt,
-            'X-API-Key: abcd123'
+            'X-API-Key: abcd123',
         );
 
         //return the transfer as a string
@@ -69,13 +76,43 @@ class Appointment extends Controller
         $response = curl_exec($ch);
         // $data = json_decode($response, TRUE);
         // var_dump($response);
-        
+
+        return $response;
+    }
+
+    /*
+    Retrieve all the hospitals in the web service
+     */
+    public function getHospitalList()
+    {
+        $url = "http://localhost/WebServices-Project/webservice/api/hospitals/";
+        $ch = curl_init();
+        $data = array(
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'Authorization: ' . $this->jwt,
+            'X-API-Key: abcd123',
+        );
+
+        //return the transfer as a string
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $data);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // Retudn headers seperatly from the Response Body
+
+        $response = curl_exec($ch);
+        // $data = json_decode($response, TRUE);
+        // var_dump($response);
+
         return $response;
 
         // $info = curl_getinfo($ch);
     }
     /*
-        Creates a POST request to create an appointment in the web service
+    Creates a POST request to create an appointment in the web service
      */
     public function createAppointment()
     {
@@ -87,7 +124,7 @@ class Appointment extends Controller
 
         $data = json_encode(array(
             "api_Key" => "abcd123",
-            "user_ID" =>  $_SESSION['user_id'],
+            "user_ID" => $_SESSION['user_id'],
             "donor_Name" => $_SESSION['name'],
             "date_Time" => $_POST['datetime'],
             "hospital" => $_POST['hospital'], //using this date and time for now since there is no form created yet
@@ -114,7 +151,7 @@ class Appointment extends Controller
     }
 
     /*
-        Generates a token by asking the web service to generate it
+    Generates a token by asking the web service to generate it
      */
     public function generateToken()
     {
@@ -124,7 +161,7 @@ class Appointment extends Controller
         $data = array(
             'Accept: application/json',
             'Content-Type: application/json',
-            'X-API-Key: abcd123'
+            'X-API-Key: abcd123',
         );
 
         //return the transfer as a string
@@ -149,14 +186,15 @@ class Appointment extends Controller
 
         $header_text = substr($response, 0, strpos($response, "\r\n\r\n"));
 
-        foreach (explode("\r\n", $header_text) as $i => $line)
-            if ($i === 0)
+        foreach (explode("\r\n", $header_text) as $i => $line) {
+            if ($i === 0) {
                 $headers['http_code'] = $line;
-            else {
+            } else {
                 list($key, $value) = explode(': ', $line);
 
                 $headers[$key] = $value;
             }
+        }
 
         return $headers;
     }
@@ -164,7 +202,7 @@ class Appointment extends Controller
     public function view_appointments()
     {
         if (!isset($this->jwt)) {
-            // generate token first 
+            // generate token first
             $this->generateToken();
         }
         // if you have the jwt already
@@ -177,7 +215,7 @@ class Appointment extends Controller
                 'Accept: application/json',
                 'Content-Type: application/json',
                 'Authorization: ' . $this->jwt,
-                'X-API-Key: abcd123'
+                'X-API-Key: abcd123',
             );
             //return the transfer as a string
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -189,7 +227,6 @@ class Appointment extends Controller
             // Return headers seperatly from the Response Body
             $response = curl_exec($ch);
             $this->view('Appointment/view_appointments', $response);
-              
 
         }
     }
@@ -197,18 +234,18 @@ class Appointment extends Controller
     public function getAppointment($appointment_ID)
     {
         if (!isset($this->jwt)) {
-            // generate token first 
+            // generate token first
             $this->generateToken();
         }
         if (isset($this->jwt)) {
-            $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID . '?user_ID='. $_SESSION['user_id'];
+            $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID . '?user_ID=' . $_SESSION['user_id'];
             $ch = curl_init();
-            
+
             $data = array(
                 'Accept: application/json',
                 'Content-Type: application/json',
                 'Authorization: ' . $this->jwt,
-                'X-API-Key: abcd123'
+                'X-API-Key: abcd123',
             );
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $data);
@@ -220,10 +257,9 @@ class Appointment extends Controller
             $response = curl_exec($ch);
             $this->view('Appointment/update_appointment', $response);
 
-
             curl_close($ch);
 
-            if (isset($_POST['updateAppointment'])) {   // if update button is clicked then do PUT request
+            if (isset($_POST['updateAppointment'])) { // if update button is clicked then do PUT request
                 $this->update_appointment($appointment_ID);
 
             }
@@ -234,64 +270,64 @@ class Appointment extends Controller
     {
         if (!isset($this->jwt)) {
             $this->generateToken();
-        }  
+        }
         if (isset($this->jwt)) {
             // do PUT here
-                 // after u change the date
+            // after u change the date
 
-                //The URL that we want to send a PUT request to.
-                $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID;
+            //The URL that we want to send a PUT request to.
+            $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID;
 
-                $fields = json_encode(array(
-                    "api_Key" => "abcd123",
-                    // "user_ID" =>  $_SESSION['user_id'],
-                    "date_Time" => $_POST['datetime'],
-                ));
-                // //Initiate cURL
-                // $ch = curl_init($url);
+            $fields = json_encode(array(
+                "api_Key" => "abcd123",
+                // "user_ID" =>  $_SESSION['user_id'],
+                "date_Time" => $_POST['datetime'],
+            ));
+            // //Initiate cURL
+            // $ch = curl_init($url);
 
-                // //Use the CURLOPT_PUT option to tell cURL that
-                // //this is a PUT request.
-                // curl_setopt($ch, CURLOPT_PUT, true);
-                // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "put");
+            // //Use the CURLOPT_PUT option to tell cURL that
+            // //this is a PUT request.
+            // curl_setopt($ch, CURLOPT_PUT, true);
+            // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "put");
 
+            // //We want the result / output returned.
+            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            //     "Content-type: application/json",
+            //     'Accept: application/json', 'Expect:',
+            //     // 'Content-Length: ' . strlen($fields),
+            //     'Authorization: ' . $this->jwt,
+            //     'X-API-Key: abcd123'
+            // ));
 
-                // //We want the result / output returned.
-                // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                //     "Content-type: application/json",
-                //     'Accept: application/json', 'Expect:',
-                //     // 'Content-Length: ' . strlen($fields), 
-                //     'Authorization: ' . $this->jwt,
-                //     'X-API-Key: abcd123'
-                // ));
+            // curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 
-                // curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url); //定义请求地址
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); //定义请求类型，当然那个提交类型那一句就不需要了
+            curl_setopt($ch, CURLOPT_HEADER, 0); //定义是否显示状态头 1：显示 ； 0：不显示
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                "Content-type: application/json",
+                'Accept: application/json',
+                // 'Content-Length: ' . strlen($fields),
+                'Authorization: ' . $this->jwt,
+                'X-API-Key: abcd123',
+            )); //定义header
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //定义是否直接输出返回流
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); //定义提交的数据
 
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url); //定义请求地址
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); //定义请求类型，当然那个提交类型那一句就不需要了
-                curl_setopt($ch, CURLOPT_HEADER, 0); //定义是否显示状态头 1：显示 ； 0：不显示 
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    "Content-type: application/json",
-                    'Accept: application/json',
-                    // 'Content-Length: ' . strlen($fields), 
-                    'Authorization: ' . $this->jwt,
-                    'X-API-Key: abcd123'
-                )); //定义header
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //定义是否直接输出返回流 
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); //定义提交的数据
+            //Execute the request.
+            $response = curl_exec($ch);
 
-                //Execute the request.
-                $response = curl_exec($ch);
-
-                $this->view('Appointment/appointment_status', $response);
+            $this->view('Appointment/appointment_status', $response);
 
             curl_close($ch); //关闭
         }
     }
 
-    public function deleteAppointment($appointment_ID) {
+    public function deleteAppointment($appointment_ID)
+    {
         if (!isset($this->jwt)) {
             $this->generateToken();
         }
@@ -302,12 +338,12 @@ class Appointment extends Controller
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    "Content-type: application/json",
-                    'Accept: application/json',
-                    'Authorization: ' . $this->jwt,
-                    'X-API-Key: abcd123'
+                "Content-type: application/json",
+                'Accept: application/json',
+                'Authorization: ' . $this->jwt,
+                'X-API-Key: abcd123',
             ));
-            
+
             $response = curl_exec($ch);
             // header('Location: /WebServices-Project/MVC/Appointment/appointment_status');
             $this->view('Appointment/appointment_status', $response);

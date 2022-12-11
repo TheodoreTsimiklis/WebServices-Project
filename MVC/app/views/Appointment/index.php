@@ -6,7 +6,9 @@
         <section class="position-relative py-4 py-xl-5">
             <div class="container">
                 <div class="d-flex justify-content-center" style="border-color: rgb(194,218,242);">
+                
                     <form method="POST" enctype="multipart/form-data">
+                       
                         <label class="form-label fs-3 fw-bold">Hospital:</label>
                         <?php
                         $arr = json_decode($data, true);
@@ -18,6 +20,16 @@
                             }
                         echo '</select>';
                         ?>
+                            <div>
+                                <?php
+                                    // $result = json_decode($data, true);
+                                    var_dump($data);
+                                    echo '<a href="'. $data['fileURL'] . '" download = "'. 'hospital-info.pdf">';
+                                ?>
+                               
+                                    <button class="" type="submit" name="getCDN" style="color: white; background-color: #36968d; border: none;border-radius: 8px;">Hospitals Detail</button>
+                                </a>
+                            </div>
                             <label class="form-label fs-3 fw-bold" style="margin-top: 11px;">Date and Time:</label>
                                 <input class="border-1 form-control form-control-lg" type="datetime-local" name="datetime" id="datetime"  min="2022-12-05T00:00" max="2023-12-05T00:00">
                             <div class="d-flex justify-content-center">

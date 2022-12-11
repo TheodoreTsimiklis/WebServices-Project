@@ -46,6 +46,8 @@ class AppointmentsController {
 
         return $result; // returns to index.php method processPostResponse
     }
+
+    
     function getUserAppointments($data, $appointment_ID) {
         return $this->appointmentModel->getUserAppointments($data, $appointment_ID); 
     }
@@ -57,9 +59,7 @@ class AppointmentsController {
     function deleteAppointment($appointment_ID) {
         return $this->appointmentModel->deleteAppointment($appointment_ID);
     }
-    // function getSingleAppointment($data){
-    //     return $this->appointmentModel->getSingleAppointment($data);
-    // }
+   
 
 
 
