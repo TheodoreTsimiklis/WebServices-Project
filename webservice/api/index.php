@@ -160,7 +160,6 @@ class API
     public function processGetCDNResponse()
     {
 
-        echo "come here ";
         $this->verifyAuthorizationHeader();
 
         // Determine the reponse properties

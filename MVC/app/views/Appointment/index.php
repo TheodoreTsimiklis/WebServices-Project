@@ -11,25 +11,23 @@
                        
                         <label class="form-label fs-3 fw-bold">Hospital:</label>
                         <?php
-                        $arr = json_decode($data, true);
                         echo 
                         '<select name="hospital" id="hospital" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
                             <option selected>Choose a hospital</option>';
-                            foreach ($arr as $item) {
+                            
+                            foreach ($data['hospitals'] as $item) {
                                 echo '<option value='.$item['hospital_id'].'>'.$item['hospital_name'].'</option>';
                             }
-                        echo '</select>';
-                        ?>
-                            <div>
-                                <?php
-                                    // $result = json_decode($data, true);
-                                    var_dump($data);
-                                    echo '<a href="'. $data['fileURL'] . '" download = "'. 'hospital-info.pdf">';
-                                ?>
-                               
-                                    <button class="" type="submit" name="getCDN" style="color: white; background-color: #36968d; border: none;border-radius: 8px;">Hospitals Detail</button>
+                        
+                            
+                        echo '</select>
+
+                            <div>                 
+                                <a class="btn btn-info mt-1" href="'.$data['cdn_url']['fileURL'].'" role="button" download> 
+                                    Hospital Details
                                 </a>
-                            </div>
+                            </div>';
+                         ?>
                             <label class="form-label fs-3 fw-bold" style="margin-top: 11px;">Date and Time:</label>
                                 <input class="border-1 form-control form-control-lg" type="datetime-local" name="datetime" id="datetime"  min="2022-12-05T00:00" max="2023-12-05T00:00">
                             <div class="d-flex justify-content-center">

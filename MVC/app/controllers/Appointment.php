@@ -28,27 +28,17 @@ class Appointment extends Controller
 
         // if you have the jwt already
         if (isset($this->jwt)) {
-            // echo $this->jwt;
-
-            // $data for all the hospital
-            // get hospitals list and put it in an array and then send it on the view
-            $data = $this->getHospitalList();
-            $this->view('Appointment/index', $data); // keep showing this page
-            // var_dump($data) ;
-
+            $data = json_decode($this->getHospitalList(), true);
             // go to the view page and send the list of hospitals
             if (isset($_POST['submit'])) { // POST : clicked Book an appointment button
                 // echo "goes here";
-                $url = $this->createAppointment();
-                $data['fileURL'] = $url;
+                $data = $this->createAppointment();
                 $this->view('Appointment/appointment_status', $data);
             }
-
-
-            if (isset($_POST['getCDN'])) {
+            else {
                 $url = $this->downloadCDNFile();
-                echo $url;
-                $this->view('Appointment/index', $url);
+                $this->view('Appointment/index', ['hospitals' => $data, 'cdn_url' => $url]); // keep showing this page 
+                // var_dump($data) ;
             }
         }
     }
@@ -74,10 +64,10 @@ class Appointment extends Controller
         // Retudn headers seperatly from the Response Body
 
         $response = curl_exec($ch);
-        // $data = json_decode($response, TRUE);
+        $result = json_decode($response, TRUE);
         // var_dump($response);
 
-        return $response;
+        return $result;
     }
 
     /*
