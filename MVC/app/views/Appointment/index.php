@@ -17,11 +17,8 @@
                             
                             foreach ($data['hospitals'] as $item) {
                                 echo '<option value='.$item['hospital_id'].'>'.$item['hospital_name'].'</option>';
-                            }
-                        
-                            
+                            }    
                         echo '</select>
-
                             <div>                 
                                 <a class="btn btn-info mt-1" href="'.$data['cdn_url']['fileURL'].'" role="button" download> 
                                     Hospital Details

@@ -7,9 +7,7 @@
                             <div class="d-flex justify-content-center" style="border-color: rgb(194,218,242);">
                                 <p class="fs-4 border rounded-0 border-2 border-secondary">
                                 <?php   
-                                    var_dump($data);
-                                    // $arr = json_decode($data, true);
-                                    
+                                    var_dump($data);        
                                 ?>
                                 </p>
                             </div>

@@ -31,14 +31,12 @@ class Appointment extends Controller
             $data = json_decode($this->getHospitalList(), true);
             // go to the view page and send the list of hospitals
             if (isset($_POST['submit'])) { // POST : clicked Book an appointment button
-                // echo "goes here";
                 $data = $this->createAppointment();
                 $this->view('Appointment/appointment_status', $data);
             }
             else {
                 $url = $this->downloadCDNFile();
                 $this->view('Appointment/index', ['hospitals' => $data, 'cdn_url' => $url]); // keep showing this page 
-                // var_dump($data) ;
             }
         }
     }
@@ -335,8 +333,8 @@ class Appointment extends Controller
             ));
 
             $response = curl_exec($ch);
-            // header('Location: /WebServices-Project/MVC/Appointment/appointment_status');
-            $this->view('Appointment/appointment_status', $response);
+            header('Location: /WebServices-Project/MVC/Appointment/view_appointments');
+            $this->view('Appointment/view_appointments');
         }
     }
 }
