@@ -29,7 +29,7 @@
                                                 echo '<td>'.$item['appointment_ID'].'</td>';
                                                 echo '<td>'.$item['hospital_name'].'</td>';
                                                 echo '<td>'.$item['hospital_street']. ', '. $item['city'] . ', ' . $item['province'] . ' ' . $item['postal_code'] .  '</td>';
-                                                echo '<td>'.$item['date_time'].'</td>';
+                                                echo '<td>'.date("F-d-Y h:i", strtotime($item['date_time'])).'</td>';
                                                 echo '<td>
                                                         <a href="' .URLROOT . '/Appointment/getAppointment/'.$item['appointment_ID'].'">
                                                             <button class="btn btn-warning" type="submit" name="updateSubmit" style="margin-right: 8px;">Update</button>
@@ -51,7 +51,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <h3 class="d-flex justify-content-center">Appointment History</h3>
+                            <!-- <h3 class="d-flex justify-content-center">Appointment History</h3>
                             <div class="d-flex justify-content-center" style="border-color: rgb(194,218,242);">
                                 <div class="table-responsive">
                                     <table class="table table-hover table-bordered">
@@ -77,7 +77,7 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </section>
                 </div>
             </div>

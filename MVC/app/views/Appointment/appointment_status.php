@@ -6,8 +6,22 @@
                         <div class="container">
                             <div class="d-flex justify-content-center" style="border-color: rgb(194,218,242);">
                                 <p class="fs-4 border rounded-0 border-2 border-secondary">
-                                <?php   
-                                    var_dump($data);        
+                                <?php   ;
+                                    
+                                    if (!empty($data['appointment'])) {
+                                        if ($data['response']['appointmentStatus']) {
+                                            echo "Appointment booking for " . $data['appointment']['donor_Name'].' successful!'.'</br>';
+                                            echo "Date and Time of appointment: " . date("F-d-Y h:i", strtotime($data['appointment']['date_Time'])).'</br>';
+                                            echo "Appointment sent to email: " . $data['appointment']['email'].'</br>';
+                                        }
+                                        else {
+                                            echo "Appointnment Booking failed!";
+                                        }
+                                    }
+                                    else {
+                                        var_dump($data);
+                                    }
+                                    
                                 ?>
                                 </p>
                             </div>

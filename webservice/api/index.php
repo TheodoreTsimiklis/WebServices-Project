@@ -128,8 +128,7 @@ class API
     {
 
         $this->verifyAuthorizationHeader();
-        // $apikey = $this->request->header['X-API-Key'];
-        // Determine the reponse properties
+
         $header = array();
         $payload = array();
         $statuscode = 0;
@@ -140,9 +139,6 @@ class API
         // Get the data/resource
         $rawpayload = $this->controller->getHospitalsList();
 
-        // Check if data  was returned: the data here is the requested resource
-        // If the data is found and can be returned
-        // The HTTP status code of the response should be: 200
         if (count($rawpayload) > 0) {
             $statuscode = 200;
             $statustext = "OK";
@@ -153,11 +149,9 @@ class API
             $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
         }
 
-        // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) {
 
             case 'application/json':
-                // Serialize the array of objects into a JSON array
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
@@ -218,17 +212,6 @@ class API
 
         $rawpayload = $this->controller->getFileFromCDN();
 
-        
-        // $fileURL = $this->controller->getFileFromCDN();
-        // echo "returned result" . $fileURL;
-
-        // $rawpayload = array("fileURL" => $fileURL);
-
-        // Get the data/resource
-
-        // Check if data  was returned: the data here is the requested resource
-        // If the data is found and can be returned
-        // The HTTP status code of the response should be: 200
         if (count($rawpayload) > 0) {
             $statuscode = 200;
             $statustext = "OK";
@@ -238,12 +221,9 @@ class API
 
             $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
         }
-
-        // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) {
 
             case 'application/json':
-                // Serialize the array of objects into a JSON array
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
@@ -288,7 +268,6 @@ class API
      *     @OA\Response(response="200", description="Booking Appointment Successful"),
      * )
      */
-
     public function processGetUserAppointmentsResponse()
     {
         $this->verifyAuthorizationHeader();
@@ -311,11 +290,6 @@ class API
         $customtoken = "";
         $rawpayload = $this->controller->getUserAppointments($data, $appointment_ID);
 
-        // Get the data/resource
-
-        // Check if data  was returned: the data here is the requested resource
-        // If the data is found and can be returned
-        // The HTTP status code of the response should be: 200
         if (count($rawpayload) > 0) {
             $statuscode = 200;
             $statustext = "OK";
@@ -353,7 +327,7 @@ class API
         echo $this->response->payload;
     }
 
-    /**
+    /** 
      * @OA\Post  (
      *     tags={"Blood Donation Appointment"},
      *     path="/webservice/api/appointments/",
@@ -407,6 +381,7 @@ class API
         switch ($this->request->header['Accept']) { // Making sure we know what the client wants -> we are generalizing/assuming that we know that we know what the client wants back(Accept)
             case 'application/json':
                 // Serialize the array of objects into a JSON array
+              
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
@@ -425,16 +400,9 @@ class API
 
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
-        $this->response = $responseBuilder->getResponse(); // which returns a response objec
-
-        $responseBody = json_decode($this->response->payload);
-
-        // for printing the payload response
-        if ($responseBody->appointmentStatus) {
-            echo "APPOINTMENT BOOKING SUCCESSFUL FOR " . $data['donor_Name'] . " ON " . date("F-d-Y", strtotime($data['date_Time'])) . ", " . date("h:i", strtotime($data['date_Time'])) . ", Email: " . $data['email'];
-        } else {
-            echo "APPOINTMENT BOOKING FAILED";
-        }
+        $this->response = $responseBuilder->getResponse(); // which returns a response object
+        echo $this->response->payload;
+     
     }
 
     /**

@@ -132,10 +132,9 @@ class Appointment extends Controller
 
         // Execute
         $response = curl_exec($ch);
-
         curl_close($ch);
-
-        return $response;
+    
+        return ["appointment" => json_decode($data, true), "response" => json_decode($response, true)];
     }
 
     /*
@@ -260,10 +259,6 @@ class Appointment extends Controller
             $this->generateToken();
         }
         if (isset($this->jwt)) {
-            // do PUT here
-            // after u change the date
-
-            //The URL that we want to send a PUT request to.
             $url = "http://localhost/WebServices-Project/webservice/api/appointments/" . $appointment_ID;
 
             $fields = json_encode(array(
@@ -271,46 +266,25 @@ class Appointment extends Controller
                 // "user_ID" =>  $_SESSION['user_id'],
                 "date_Time" => $_POST['datetime'],
             ));
-            // //Initiate cURL
-            // $ch = curl_init($url);
-
-            // //Use the CURLOPT_PUT option to tell cURL that
-            // //this is a PUT request.
-            // curl_setopt($ch, CURLOPT_PUT, true);
-            // curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "put");
-
-            // //We want the result / output returned.
-            // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            //     "Content-type: application/json",
-            //     'Accept: application/json', 'Expect:',
-            //     // 'Content-Length: ' . strlen($fields),
-            //     'Authorization: ' . $this->jwt,
-            //     'X-API-Key: abcd123'
-            // ));
-
-            // curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-
+   
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url); //定义请求地址
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); //定义请求类型，当然那个提交类型那一句就不需要了
-            curl_setopt($ch, CURLOPT_HEADER, 0); //定义是否显示状态头 1：显示 ； 0：不显示
+            curl_setopt($ch, CURLOPT_URL, $url); 
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); 
+            curl_setopt($ch, CURLOPT_HEADER, 0); 
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 "Content-type: application/json",
                 'Accept: application/json',
-                // 'Content-Length: ' . strlen($fields),
                 'Authorization: ' . $this->jwt,
                 'X-API-Key: abcd123',
-            )); //定义header
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //定义是否直接输出返回流
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); //定义提交的数据
-
+            ));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); 
             //Execute the request.
             $response = curl_exec($ch);
 
             $this->view('Appointment/appointment_status', $response);
 
-            curl_close($ch); //关闭
+            curl_close($ch);
         }
     }
 
