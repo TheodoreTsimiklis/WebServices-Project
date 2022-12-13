@@ -3,52 +3,60 @@
             <div class="row d-flex justify-content-center">
                 <div class="col">
                     <section class="position-relative py-4 py-xl-5">
-                        <h3 class="d-flex justify-content-center">Incoming Appointments</h3>
+                        <h3 class="d-flex justify-content-center">Appointments History</h3>
                         <div class="container">
                             <div class="d-flex justify-content-center" style="border-color: rgb(194,218,242);">
                                 <div class="table-responsive">
-
-                                    <table class="table table-hover table-bordered">
-                                        <thead class="table-dark">
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Hospital&nbsp;</th>
-                                                <th>Address</th>
-                                                <th>DateTime</th>
-                                                <th></th>
-                                                <th></th>
-                                                <!-- <th class="text-center"></th> -->
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            
-                                            <?php 
-                                            $arr = json_decode($data, true);
-                                            foreach ($arr as $item) {
-                                                echo '<tr>';
-                                                echo '<td>'.$item['appointment_ID'].'</td>';
-                                                echo '<td>'.$item['hospital_name'].'</td>';
-                                                echo '<td>'.$item['hospital_street']. ', '. $item['city'] . ', ' . $item['province'] . ' ' . $item['postal_code'] .  '</td>';
-                                                echo '<td>'.date("F-d-Y h:i", strtotime($item['date_time'])).'</td>';
-                                                echo '<td>
-                                                        <a href="' .URLROOT . '/Appointment/getAppointment/'.$item['appointment_ID'].'">
-                                                            <button class="btn btn-warning" type="submit" name="updateSubmit" style="margin-right: 8px;">Update</button>
-                                                        </a>
-                                                     </td>';
+                                    <?php 
+                                        $arr = json_decode($data, true);
                                                
-                                                echo '<td>
-                                                        <a href="' .URLROOT . '/Appointment/deleteAppointment/'.$item['appointment_ID'].'">
-                                                            <button class="btn btn-danger" type="submit" name="deleteSubmit" style="margin-right: 8px;">Cancel</button>
-                                                        </a>
-                                                    </td>';
-                                               
-                                                echo '</tr>';
+                                        if (!isset($arr['message']) ||$arr['message'] != "No data found, possibly invalid enpoint.") {
+                                            echo '<table class="table table-hover table-bordered">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Hospital&nbsp;</th>
+                                                    <th>Address</th>
+                                                    <th>DateTime</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    <!-- <th class="text-center"></th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>';
                                                 
-                                            }
-                                            // }
-                                            ?>                                           
-                                        </tbody>
-                                    </table>
+                                                    foreach ($arr as $item) {
+                                                        echo '<tr>';
+                                                        echo '<td>'.$item['appointment_ID'].'</td>';
+                                                        echo '<td>'.$item['hospital_name'].'</td>';
+                                                        echo '<td>'.$item['hospital_street']. ', '. $item['city'] . ', ' . $item['province'] . ' ' . $item['postal_code'] .  '</td>';
+                                                        echo '<td>'.date("F-d-Y h:i", strtotime($item['date_time'])).'</td>';
+                                                        echo '<td>
+                                                                <a href="' .URLROOT . '/Appointment/update_appointment/'.$item['appointment_ID'].'">
+                                                                    <button class="btn btn-warning" type="submit" name="updateSubmit" style="margin-right: 8px;">Update</button>
+                                                                </a>
+                                                            </td>';
+                                                    
+                                                        echo '<td>
+                                                                <a href="' .URLROOT . '/Appointment/deleteAppointment/'.$item['appointment_ID'].'">
+                                                                    <button class="btn btn-danger" type="submit" name="deleteSubmit" style="margin-right: 8px;">Cancel</button>
+                                                                </a>
+                                                            </td>';
+                                                    
+                                                        echo '</tr>';
+                                                        
+                                                    }
+                                                }
+                                                else{
+                                                    echo "No appointment found";
+                                                }
+                                            
+                                            
+                                                                                   
+                                       echo' </tbody>
+                                    </table>';
+
+                                      ?>  
                                 </div>
                             </div>
                             <!-- <h3 class="d-flex justify-content-center">Appointment History</h3>

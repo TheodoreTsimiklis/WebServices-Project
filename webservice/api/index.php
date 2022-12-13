@@ -435,8 +435,8 @@ class API
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
         $appointment_ID = $this->request->urlparams['id'];
-        echo 'this is put method in api index.php ' . $appointment_ID;
-        var_dump($data);
+        // echo 'this is put method in api index.php ' . $appointment_ID;
+        // var_dump($data);
 
         $header = array();
         $payload = array();
@@ -445,7 +445,9 @@ class API
         $contenttype = "";
         $customtoken = "";
 
-        $rawpayload = $this->controller->updateAppointment($data, $appointment_ID);
+        $status = $this->controller->updateAppointment($data, $appointment_ID);
+        $rawpayload = array("updateStatus" => $status);
+
 
         if (!is_null($rawpayload)) {
             $statuscode = 200;
