@@ -18,9 +18,6 @@
                                             echo "Appointnment Booking failed!";
                                         }
                                     }
-                                    else {
-                                        // var_dump($data);
-                                    }
 
                                     if (!empty($data['message'])) {
                                         echo $data['message'];

@@ -6,6 +6,9 @@ class Dashboard extends Controller
      */ 
     public function __construct()
     {
+        if(!isLoggedIn()){
+            header('Location: /WebServices-Project/MVC/Login');
+        }
     }
 
     /*

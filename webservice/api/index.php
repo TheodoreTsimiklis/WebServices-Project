@@ -435,9 +435,7 @@ class API
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
         $appointment_ID = $this->request->urlparams['id'];
-        // echo 'this is put method in api index.php ' . $appointment_ID;
-        // var_dump($data);
-
+  
         $header = array();
         $payload = array();
         $statuscode = 0;
@@ -448,7 +446,6 @@ class API
         $status = $this->controller->updateAppointment($data, $appointment_ID);
         $rawpayload = array("updateStatus" => $status);
 
-
         if (!is_null($rawpayload)) {
             $statuscode = 200;
             $statustext = "OK";
@@ -456,12 +453,9 @@ class API
         } else { // 0 rows in the databasse because the resource was not found
             $statuscode = 404;
             $statustext = "Not Found";
-
             $rawpayload = array('message' => "Possibly invalid enpoint.");
-
             $customtoken = 'Bearer ' . $this->jwt;
         }
-
         // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) { // Making sure we know what the client wants -> we are generalizing/assuming that we know that we know what the client wants back(Accept)
             case 'application/json':

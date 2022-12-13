@@ -9,9 +9,9 @@ class Appointment extends Controller
     public function __construct()
     {
         $this->loginModel = $this->model('loginModel');
-        // if(!isLoggedIn()){
-        //     header('Location: /MVC/Login');
-        // }
+        if(!isLoggedIn()){
+            header('Location: /WebServices-Project/MVC/Login');
+        }
     }
 
     /*
@@ -59,11 +59,9 @@ class Appointment extends Controller
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // Retudn headers seperatly from the Response Body
-
+        
         $response = curl_exec($ch);
         $result = json_decode($response, TRUE);
-        // var_dump($response);
 
         return $result;
     }
@@ -118,7 +116,6 @@ class Appointment extends Controller
             "hospital" => $_POST['hospital'], //using this date and time for now since there is no form created yet
             "email" => $email,
         ));
-        // var_dump($data);
 
         curl_setopt($ch, CURLOPT_URL, $url);
 
@@ -223,7 +220,6 @@ class Appointment extends Controller
         if (!isset($this->jwt)) {
             $this->generateToken();
         }
-        // if (isset($this->jwt) && (isset($_POST['updateAppointment']))) {
         if (isset($this->jwt) ) {
             
             if (isset($_POST['updateAppointment'])) {
@@ -231,7 +227,6 @@ class Appointment extends Controller
 
                 $fields = json_encode(array(
                     "api_Key" => "abcd123",
-                    // "user_ID" =>  $_SESSION['user_id'],
                     "date_Time" => $_POST['datetime'],
                 ));
     
@@ -250,7 +245,6 @@ class Appointment extends Controller
                 //Execute the request.
                 $response = curl_exec($ch);
 
-                var_dump(json_decode($response));
                 if (json_decode($response)){
                     $data= array(
                         'message' => 'Update Success!'
@@ -278,12 +272,11 @@ class Appointment extends Controller
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
                 curl_setopt($ch, CURLINFO_HEADER_OUT, true);
                 curl_setopt($ch, CURLOPT_URL, $url);
-                // Return headers seperatly from the Response Body
+               
                 $response = curl_exec($ch);
                 $this->view('Appointment/update_appointment', $response);
             }
-            curl_close($ch);
-            
+            curl_close($ch);  
         }
     }
 
