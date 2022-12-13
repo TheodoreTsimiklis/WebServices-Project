@@ -3,12 +3,191 @@ info:
   title: 'Blood Donation Appointment Booking API'
   version: '1.0'
 paths:
-  /webservice/api/auth/:
+  /WebServices-Project/webservice/api/hospitals/:
+    get:
+      tags:
+        - 'Hospitals List'
+      summary: 'Get Hospitals List'
+      operationId: aeee1ab70d74c73dc9ec2d0871888a44
+      parameters:
+        -
+          name: X-API-Key
+          in: header
+          description: 'Api key'
+          required: true
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Get hospitals list failed'
+        '200':
+          description: 'Get hospitals list Successful'
+  /WebServices-Project/webservice/api/cdn/:
+    get:
+      tags:
+        - CDN
+      summary: 'Get File from CDN'
+      operationId: d45cfc5aa7c5353f856aac99c15ce17b
+      parameters:
+        -
+          name: X-API-Key
+          in: header
+          description: 'Api key'
+          required: true
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Get File from CDN failed'
+        '200':
+          description: 'Get File from CDN Successful'
+  '/WebServices-Project/webservice/api/appointments/{appointment_ID}/?user_ID={user_ID}/':
+    get:
+      tags:
+        - 'Blood Donation Appointment'
+      summary: "Get User's Appointments or get a single appointment"
+      operationId: 89302136cb89ab43a5c869136ebd1b17
+      parameters:
+        -
+          name: X-API-Key
+          in: header
+          description: 'Api key'
+          required: true
+          schema:
+            type: string
+        -
+          name: appointment_ID
+          in: path
+          description: 'Appointment ID'
+          schema:
+            type: Integer
+        -
+          name: user_ID
+          in: path
+          description: 'User ID'
+          required: true
+          schema:
+            type: Integer
+      responses:
+        '401':
+          description: 'Get appointment failed'
+        '200':
+          description: 'Get appointment Successful'
+  /WebServices-Project/webservice/api/appointments/:
+    post:
+      tags:
+        - 'Blood Donation Appointment'
+      summary: 'Book an appointment'
+      operationId: 24df07756e106a24d7fd1a78eca18853
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - apikey
+                - userID
+                - donorname
+                - datetime
+              properties:
+                api_Key:
+                  description: 'client apikey'
+                  type: string
+                user_ID:
+                  description: 'user id'
+                  type: integer
+                donor_Name:
+                  description: 'donor name'
+                  type: string
+                date_Time:
+                  description: 'date and time'
+                  type: string
+                hospital:
+                  description: 'Hospital ID'
+                  type: integer
+                email:
+                  description: "Donor's Email"
+                  type: string
+              type: object
+            example:
+              api_Key: abcd123
+              user_ID: 1
+              donor_Name: 'Chilka Castro'
+              date_Time: '2022-09-23 11:40'
+              hospital: 1
+              email: example@gmail.com
+      responses:
+        '401':
+          description: 'Booking Appointment Failed'
+        '200':
+          description: 'Booking Appointment Successful'
+  '/WebServices-Project/webservice/api/appointments/{appointment_ID}/':
+    put:
+      tags:
+        - 'Blood Donation Appointment'
+      summary: 'Update an appointment time'
+      operationId: 29f46187b9930b00e5d864f648142ea4
+      parameters:
+        -
+          name: appointment_ID
+          in: path
+          description: 'appointment id'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                api_Key: abcd1234
+                date_Time: '2022-12-12 14:30'
+              properties:
+                api_Key:
+                  description: 'api key'
+                  type: string
+                date_Time:
+                  description: 'data time'
+                  type: string
+              type: object
+            example:
+              api_Key: abcd123
+              date_Time: '2022-09-23 11:40'
+      responses:
+        '401':
+          description: 'Update Appointment Failed'
+        '200':
+          description: 'Update Appointment Successful'
+    delete:
+      tags:
+        - 'Blood Donation Appointment'
+      summary: 'Delete an appointment'
+      operationId: 6bca4d976fb7d560bc2bc3ef902629be
+      parameters:
+        -
+          name: appointment_ID
+          in: path
+          description: 'appointment id'
+          required: true
+          schema:
+            type: integer
+        -
+          name: X-API-Key
+          in: header
+          description: 'api key'
+          required: true
+          schema:
+            type: string
+      responses:
+        '401':
+          description: 'Delete Appointment Failed'
+        '200':
+          description: 'Delete Appointment Successful'
+  /WebServices-Project/webservice/api/auth/:
     get:
       tags:
         - 'JWT Authentication'
       summary: 'Create JWT'
-      operationId: 3ca95008b8e3a86e3c21427d89ec7675
+      operationId: 71be00d9adf30edf316570105554cce1
       parameters:
         -
           name: X-API-Key
@@ -24,42 +203,3 @@ paths:
       security:
         -
           Bearer: []
-  /webservice/api/appointments/:
-    post:
-      tags:
-        - 'Blood Donation Appointment'
-      summary: "Donor's appointment"
-      operationId: 917e6074f8b46a5eb9dadf05155f920f
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - apikey
-                - userID
-                - donorname
-                - datetime
-              properties:
-                apikey:
-                  description: 'client apikey'
-                  type: string
-                userID:
-                  description: 'user id'
-                  type: integer
-                donorname:
-                  description: 'donor name'
-                  type: string
-                datetime:
-                  description: 'date and time'
-                  type: string
-              type: object
-            example:
-              apikey: abc123
-              userID: 1
-              donorname: 'Chilka Castro'
-              datetime: '2022-09-23 11:40'
-      responses:
-        '401':
-          description: 'Booking Appointment Failed'
-        '200':
-          description: 'Booking Appointment Successful'

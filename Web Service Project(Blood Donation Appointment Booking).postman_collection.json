@@ -1,0 +1,360 @@
+{
+	"info": {
+		"_postman_id": "3ac37d30-7d36-4821-9e84-c5019f82d9a5",
+		"name": "Web Service Project(Blood Donation Appointment Booking)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24005255"
+	},
+	"item": [
+		{
+			"name": "GET Authentication",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/auth/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"auth",
+						""
+					],
+					"query": [
+						{
+							"key": "accept",
+							"value": "application/json",
+							"disabled": true
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all specific user's appointments",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3dlYnNlcnZpY2UvYXBpLmNvbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvY2xpZW50L2NsaWVudEpXVC5jb20iLCJpYXQiOjE2NjgxMTI0ODksIm5iZiI6MTY2ODAwNDU3OSwiZXhwIjoxNjk5NjU5ODI5fQ.uOQUJTl-Xh7UaJhOKaV9bldhNpeD6goIYL5l-lD8K5s",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/appointments/?user_ID=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"appointments",
+						""
+					],
+					"query": [
+						{
+							"key": "user_ID",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all hospitals",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3dlYnNlcnZpY2UvYXBpLmNvbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvY2xpZW50L2NsaWVudEpXVC5jb20iLCJpYXQiOjE2NjgxMTI0ODksIm5iZiI6MTY2ODAwNDU3OSwiZXhwIjoxNjk5NjU5ODI5fQ.uOQUJTl-Xh7UaJhOKaV9bldhNpeD6goIYL5l-lD8K5s",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/hospitals/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"hospitals",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET CDN link",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3dlYnNlcnZpY2UvYXBpLmNvbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvY2xpZW50L2NsaWVudEpXVC5jb20iLCJpYXQiOjE2NjgxMTI0ODksIm5iZiI6MTY2ODAwNDU3OSwiZXhwIjoxNjk5NjU5ODI5fQ.uOQUJTl-Xh7UaJhOKaV9bldhNpeD6goIYL5l-lD8K5s",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/cdn/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"cdn",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all specific user's appointment",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3dlYnNlcnZpY2UvYXBpLmNvbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvY2xpZW50L2NsaWVudEpXVC5jb20iLCJpYXQiOjE2NjgxMTI0ODksIm5iZiI6MTY2ODAwNDU3OSwiZXhwIjoxNjk5NjU5ODI5fQ.uOQUJTl-Xh7UaJhOKaV9bldhNpeD6goIYL5l-lD8K5s",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/appointments/1?user_ID=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"appointments",
+						"1"
+					],
+					"query": [
+						{
+							"key": "user_ID",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST create appointment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3dlYnNlcnZpY2UvYXBpLmNvbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvY2xpZW50L2NsaWVudEpXVC5jb20iLCJpYXQiOjE2NjgxMTI0ODksIm5iZiI6MTY2ODAwNDU3OSwiZXhwIjoxNjk5NjU5ODI5fQ.uOQUJTl-Xh7UaJhOKaV9bldhNpeD6goIYL5l-lD8K5s",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"api_Key\": \"abcd123\",\r\n\"user_ID\": 1,\r\n\"donor_Name\": \"Chi Castro\",\r\n\"date_Time\": \"2022-12-10 11:30\",\r\n\"hospital\": 2,\r\n\"email\":\"chi@yahoo.ca\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/appointments/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"appointments",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT update apppointment",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3dlYnNlcnZpY2UvYXBpLmNvbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvY2xpZW50L2NsaWVudEpXVC5jb20iLCJpYXQiOjE2NjgxMTI0ODksIm5iZiI6MTY2ODAwNDU3OSwiZXhwIjoxNjk5NjU5ODI5fQ.uOQUJTl-Xh7UaJhOKaV9bldhNpeD6goIYL5l-lD8K5s",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"api_Key\": \"abcd123\",\r\n\"date_Time\": \"2023-01-10 12:00\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/appointments/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"appointments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE cancel specific user appointment",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0L3dlYnNlcnZpY2UvYXBpLmNvbSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QvY2xpZW50L2NsaWVudEpXVC5jb20iLCJpYXQiOjE2NjgxMTI0ODksIm5iZiI6MTY2ODAwNDU3OSwiZXhwIjoxNjk5NjU5ODI5fQ.uOQUJTl-Xh7UaJhOKaV9bldhNpeD6goIYL5l-lD8K5s",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "abcd123",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"api_Key\": \"abcd123\",\r\n\"user_ID\": 1,\r\n\"donor_Name\": \"Chi Castro\",\r\n\"date_Time\": \"2022-12-10 11:00\",\r\n\"hospital\": 2,\r\n\"email\":\"chi@yahoo.ca\"\r\n}\r\n\r\n"
+				},
+				"url": {
+					"raw": "http://localhost/WebServices-Project/webservice/api/appointments/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"WebServices-Project",
+						"webservice",
+						"api",
+						"appointments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

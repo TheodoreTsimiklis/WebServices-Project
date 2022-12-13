@@ -9,7 +9,7 @@ class Account extends Controller
     }
 
     /*
-    Displays About page (who we are information)
+    Displays Account page 
      */
     public function index()
     {

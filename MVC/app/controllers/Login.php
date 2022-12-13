@@ -30,17 +30,7 @@ class Login extends Controller
                     ];
                     $this->view('Home/index',$data);
                 
-                    /*
-                    // LOGGING
-                    // Create the logger
-                    $logger = new Logger('my_logger');
-                    // Now add some handlers
-                    $logger->pushHandler(new StreamHandler(dirname(dirname(__FILE__)).'/logs/conversionlog.log', Level::Debug));
-                    $logger->pushHandler(new FirePHPHandler());
-
-                    // You can now use your logger
-                    $logger->info($user->username.' logged in successfully');
-                    */
+                    
                 }
                 else{
                     $data = [

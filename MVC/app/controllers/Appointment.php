@@ -4,7 +4,7 @@ class Appointment extends Controller
     private $jwt;
 
     /*
-    Default constructor for the About
+    Default constructor for the Appointment Controller
      */
     public function __construct()
     {
@@ -15,7 +15,7 @@ class Appointment extends Controller
     }
 
     /*
-    Displays About page (who we are information)
+    Displays book Appointment page 
      */
     public function index()
     {
@@ -24,7 +24,6 @@ class Appointment extends Controller
             $this->generateToken();
         }
 
-        // $data = array();
 
         // if you have the jwt already
         if (isset($this->jwt)) {
@@ -41,6 +40,10 @@ class Appointment extends Controller
         }
     }
 
+
+    /**
+     * download file from CDN
+     */
     public function downloadCDNFile()
     {
         $url = "http://localhost/WebServices-Project/webservice/api/cdn/";
@@ -90,12 +93,10 @@ class Appointment extends Controller
         // Retudn headers seperatly from the Response Body
 
         $response = curl_exec($ch);
-        // $data = json_decode($response, TRUE);
-        // var_dump($response);
 
         return $response;
 
-        // $info = curl_getinfo($ch);
+ 
     }
     /*
     Creates a POST request to create an appointment in the web service
@@ -164,6 +165,10 @@ class Appointment extends Controller
         $this->jwt = $headers["Custom-Token"];
     }
 
+
+    /**
+     * Retudn headers seperatly from the Response Body
+     */
     public function get_headers_from_curl_response($response)
     {
         $headers = array();
@@ -183,6 +188,10 @@ class Appointment extends Controller
         return $headers;
     }
 
+
+    /**
+     * get request: get user's appointments 
+     */
     public function view_appointments()
     {
         if (!isset($this->jwt)) {
@@ -215,6 +224,10 @@ class Appointment extends Controller
         }
     }
 
+
+    /**
+     * PUT request: update an appointment
+     */
     public function update_appointment($appointment_ID)
     {
         if (!isset($this->jwt)) {
@@ -280,6 +293,10 @@ class Appointment extends Controller
         }
     }
 
+
+    /**
+     * Delete request: delete an appointment 
+     */
     public function deleteAppointment($appointment_ID)
     {
         if (!isset($this->jwt)) {

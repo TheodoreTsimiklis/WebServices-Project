@@ -2,7 +2,7 @@
 class Dashboard extends Controller
 {
     /*
-     Default constructor for the About
+     Default constructor for the Dashboard
      */ 
     public function __construct()
     {
@@ -12,7 +12,7 @@ class Dashboard extends Controller
     }
 
     /*
-    Displays About page (who we are information)
+    Displays Dashboard page 
      */
     public function index()
     {
