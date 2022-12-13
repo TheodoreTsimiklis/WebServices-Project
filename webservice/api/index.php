@@ -81,17 +81,9 @@ class API
 
                 break;
             case 'PUT':
-                // for modifying appointments
-                if ($controllername == "AppointmentsController") {
-                    $this->processPutResponse();
-                }
-
+                $this->processPutResponse();
                 break;
             case 'DELETE':
-                if ($controllername == "AppointmentsController") {
-                    echo "HERE";
-                }
-
                 $this->processDeleteResponse();
                 break;
             case 'HEAD':
@@ -281,7 +273,6 @@ class API
             'user_ID' => $user_ID,
         ];
 
-        // Determine the reponse properties
         $header = array();
         $payload = array();
         $statuscode = 0;
@@ -300,15 +291,11 @@ class API
             $rawpayload = array('message' => "No data found, possibly invalid enpoint.");
         }
 
-        // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) {
-
             case 'application/json':
-                // Serialize the array of objects into a JSON array
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
-
                 break;
             case 'application/xml':
                 break;
@@ -351,12 +338,9 @@ class API
      */
     public function processPostResponse()
     {
-
         $this->verifyAuthorizationHeader();
-
         $json = file_get_contents('php://input');
         $data = json_decode($json, true);
-
         $header = array();
         $payload = array();
         $statuscode = 0;
@@ -371,17 +355,13 @@ class API
         if (!is_null($rawpayload)) {
             $statuscode = 200;
             $statustext = "OK";
-        } else { // 0 rows in the databasse because the resource was not found
+        } else { 
             $statuscode = 404;
             $statustext = "Not Found";
             $rawpayload = array('message' => "Possibly invalid enpoint.");
         }
-
-        // How do we decide what is the response content-type?
-        switch ($this->request->header['Accept']) { // Making sure we know what the client wants -> we are generalizing/assuming that we know that we know what the client wants back(Accept)
+        switch ($this->request->header['Accept']) { 
             case 'application/json':
-                // Serialize the array of objects into a JSON array
-              
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
@@ -395,12 +375,11 @@ class API
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
         }
-        //set up the headerfields that will be sent to the response builder
         $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
 
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
-        $this->response = $responseBuilder->getResponse(); // which returns a response object
+        $this->response = $responseBuilder->getResponse(); 
         echo $this->response->payload;
      
     }
@@ -450,16 +429,14 @@ class API
             $statuscode = 200;
             $statustext = "OK";
             $customtoken = 'Bearer ' . $this->jwt;
-        } else { // 0 rows in the databasse because the resource was not found
+        } else { 
             $statuscode = 404;
             $statustext = "Not Found";
             $rawpayload = array('message' => "Possibly invalid enpoint.");
             $customtoken = 'Bearer ' . $this->jwt;
         }
-        // How do we decide what is the response content-type?
-        switch ($this->request->header['Accept']) { // Making sure we know what the client wants -> we are generalizing/assuming that we know that we know what the client wants back(Accept)
+        switch ($this->request->header['Accept']) { 
             case 'application/json':
-                // Serialize the array of objects into a JSON array
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
@@ -473,12 +450,12 @@ class API
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
         }
-        //set up the headerfields that will be sent to the response builder
+        
         $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
 
         $responseBuilder = new Responsebuilder($headerfields, $payload);
 
-        $this->response = $responseBuilder->getResponse(); // which returns a response objec
+        $this->response = $responseBuilder->getResponse(); 
 
         echo $this->response->payload;
     }
@@ -525,16 +502,15 @@ class API
             $statuscode = 200;
             $statustext = "OK";
             $customtoken = 'Bearer ' . $this->jwt;
-        } else { // 0 rows in the databasse because the resource was not found
+        } else { 
             $statuscode = 404;
             $statustext = "Not Found";
             $rawpayload = array('message' => "Possibly invalid enpoint.");
             $customtoken = 'Bearer ' . $this->jwt;
         }
-        // How do we decide what is the response content-type?
-        switch ($this->request->header['Accept']) { // Making sure we know what the client wants -> we are generalizing/assuming that we know that we know what the client wants back(Accept)
+      
+        switch ($this->request->header['Accept']) { 
             case 'application/json':
-                // Serialize the array of objects into a JSON array
                 $payload = json_encode($rawpayload);
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
@@ -548,10 +524,10 @@ class API
                 $contenttype = 'application/json';
                 $customtoken = 'Bearer ' . $this->jwt;
         }
-        //set up the headerfields that will be sent to the response builder
+        
         $headerfields = ['Status-Code' => $statuscode, 'Status-Text' => $statustext, 'Content-Type' => $contenttype, 'Custom-Token' => $customtoken];
         $responseBuilder = new Responsebuilder($headerfields, $payload);
-        $this->response = $responseBuilder->getResponse(); // which returns a response objec
+        $this->response = $responseBuilder->getResponse(); 
         echo $this->response->payload;
     }
 
@@ -559,7 +535,6 @@ class API
     {
         try {
             $Authorization = $this->request->header["Authorization"];
-            // echo $jwt;
             $this->jwt = explode(" ", $Authorization)[1];
             $apikey = $this->request->header["X-API-Key"];
             $decodedpayload = $this->auth->verifyToken($this->jwt, $apikey);
@@ -593,20 +568,15 @@ class API
 
     public function processGetAuthResponse()
     {
-
         $apikey = $this->request->header['X-API-Key'];
-        // Determine the reponse properties
         $header = array();
         $payload = array();
         $statuscode = 0;
         $statustext = "";
         $contenttype = "";
         $customtoken = "";
-        // Generate a JWT token
+       
         $jwt_token = $this->controller->processToken($apikey);
-        // Check if data  was returned: the data here is the requested resource
-        // If the data is found and can be returned
-        // The HTTP status code of the response should be: 200
 
         $logger = new Logger('JWTLogger');
         $logger->pushHandler(new StreamHandler(dirname(dirname(__FILE__)) . '/logs/info.log', Level::Info));
@@ -621,10 +591,8 @@ class API
             $statustext = "Unauthorized";
             $logger->info("Token is empty");
         }
-        // How do we decide what is the response content-type?
         switch ($this->request->header['Accept']) {
             case 'application/json':
-                // Serialize the array of objects into a JSON array
                 $customtoken = "Bearer " . $jwt_token;
                 $contenttype = 'application/json';
                 break;
